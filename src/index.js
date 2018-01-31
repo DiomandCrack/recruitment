@@ -11,7 +11,7 @@ import Login from './container/login/Login'
 import Register from './container/register/Register'
 
 const service = new Service();
-new AxiosInterceptors();
+// new AxiosInterceptors();
 
 service.get('data').then(
     (response)=>{

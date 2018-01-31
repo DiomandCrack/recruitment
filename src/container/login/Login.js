@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
+import Logo from '../../components/logo/Logo'
 
 export default class Login extends Component {
     render(){
-        return(<h1>登陆</h1>)
+        return(
+            <div>
+                <Logo/>
+            </div>
+        )
     }
 }

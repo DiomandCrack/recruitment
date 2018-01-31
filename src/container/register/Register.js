@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
+import Logo from '../../components/logo/Logo'
 
 export default class Register extends Component{
     render(){
         return (
-            <h1>注册页</h1>
+            <div>
+                <Logo/>
+                <h2>注册新用户</h2>
+            </div>
         )
     }
 }
