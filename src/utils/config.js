@@ -1,12 +1,6 @@
 import axios from 'axios'
 import { Toast } from 'antd-mobile'
 
-
-
-
-
-
-
 export class AxiosInterceptors {
     constructor() {
         this.interceptRequest();
