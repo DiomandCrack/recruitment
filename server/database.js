@@ -6,14 +6,10 @@ const User = mongoose.model('user', new mongoose.Schema({
     user: { type: String, require: true },
     age: { type: Number, require: true },
 }));
-//
 
-// User.remove({}, (err, result) => {
+// User.update({ 'user': 'xiaohua' }, { '$set': { age: 26 } }, (err, result) => {
 //     console.log(err ? err : result)
 // });
-User.update({ 'user': 'xiaohua' }, { '$set': { age: 26 } }, (err, result) => {
-    console.log(err ? err : result)
-});
 class Database {
     connect() {
         mongoose.connect(DB_URL)

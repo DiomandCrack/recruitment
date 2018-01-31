@@ -1,7 +1,17 @@
 const express = require('express');
 const Database = require('./database');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
+
+app.use(cors({
+    exposedHeaders: "*"
+}));
+
+app.use(bodyParser.json({
+    limit: '50mb'
+}));
 
 const database = new Database();
 database.connect();
