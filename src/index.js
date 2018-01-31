@@ -20,11 +20,18 @@ service.get('data').then(
     }
 )
 
+function Boss (){
+    return (
+        <h1>Boss</h1>
+    )
+}
+
 ReactDom.render(
     (<Provider>
         <BrowserRouter>
             <div>
                 <AuthRoute/>
+                <Route path='/boss' componnet={Boss}></Route>
                 <Route path='/login' component={Login}></Route>
                 <Route path='/register' component={Register}></Route>
             </div>
