@@ -12,7 +12,7 @@ new AxiosInterceptors();
 ReactDom.render(
     (<Provider store={store}>
         <BrowserRouter>
-        <div></div>
+        <div>Hello world</div>
         </BrowserRouter>
     </Provider>),
     document.getElementById('root')
