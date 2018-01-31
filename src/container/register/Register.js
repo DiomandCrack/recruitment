@@ -15,20 +15,16 @@ export default class Register extends Component{
             <div>
                 <Logo/>
                 <h2>注册新用户</h2>
+                <WhiteSpace/>
                 <List>
-                    <WhiteSpace/>
                     <InputItem>用户名</InputItem>
-                    <WhiteSpace/>
                     <InputItem>邮箱</InputItem>
-                    <WhiteSpace/>
                     <InputItem>密码</InputItem>
-                    <WhiteSpace/>
                     <InputItem>确认密码</InputItem>
                     <WhiteSpace/>
                     <RadioItem checked={this.state.type==='seeker'}>
                         求职者
                     </RadioItem>
-                    <WhiteSpace/>
                     <RadioItem checked={this.state.type==='boss'}>
                         BOSS
                     </RadioItem>
