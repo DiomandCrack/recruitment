@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiURL = `http://locathost:3001`
+const apiURL = `http://localhost:3001`
 export default class Service {
     get(endpoint, options = null) {
         const url = `${apiURL}/${endpoint}`;
