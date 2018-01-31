@@ -1,7 +1,7 @@
 const Database = require('./database');
 const database = new Database();
 database.connect();
-class Router {
+class AppRouter {
     constructor(app) {
         this.app = app;
         this.setUpRouter();
@@ -34,3 +34,5 @@ class Router {
         });
     }
 }
+
+module.exports = AppRouter;
