@@ -13,6 +13,11 @@ class User {
         method:GET
         endpoint:/user/info
         */
+        Router.get('/list',(req,res,next)=>{
+            app.db.getModel('user').find({},(err,list)=>{
+                return res.json(list)
+            })
+        })
         Router.get('/info', (req, res, next) => {
             //validate cookie
             return res.json({ code: 0 });
