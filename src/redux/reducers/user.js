@@ -32,7 +32,7 @@ export const user=(state=initState,action) => {
 }
 
 
-
+//async action creator
 export const register = (user,email,pwd,rpwd,type)=>{
     if(!user){
         return errMsg('用户名不能为空');

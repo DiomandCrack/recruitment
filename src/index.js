@@ -4,7 +4,7 @@ import ReactDom from 'react-dom'
 import { Provider } from 'react-redux'
 import {BrowserRouter,Route,Redirect,Switch,link} from 'react-router-dom'
 
-import store from './redux/store'
+import {store} from './redux/store'
 import AuthRoute from './components/authroute/AuthRoute'
 import {AxiosInterceptors} from './utils/config'
 import Service from './utils/service'
@@ -27,8 +27,8 @@ function Boss (){
 }
 
 ReactDom.render(
-    (<Provider>
-        <BrowserRouter store={store}>
+    (<Provider store={store}>
+        <BrowserRouter>
             <div>
                 <AuthRoute/>
                 <Route path='/boss' componnet={Boss}></Route>

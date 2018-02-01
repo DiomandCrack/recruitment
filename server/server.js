@@ -17,7 +17,7 @@ app.use(bodyParser.json({
 }));
 
 app.models = new Model(app);
-// app.router = new AppRouter(app);
+app.router = new AppRouter(app);
 app.use('/user', userRouter)
 
 app.listen(3001, () => {

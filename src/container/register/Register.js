@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 import Logo from '../../components/logo/Logo'
 import {List,InputItem,WingBlank,WhiteSpace,Button,Radio} from 'antd-mobile'
+import {connect} from 'react-redux'
+import {register} from '../../redux/reducers/user'
 
+@connect(
+    state=>{
+        console.log(state.user)
+        return state.user},
+    {register}
+)
 export default class Register extends Component{
     state={
         user:'',
@@ -16,7 +24,9 @@ export default class Register extends Component{
         })
     }
     handleRegister=()=>{
-        console.log(this.state)
+        this.props.register(this.state);
+        console.log(this.state);
+        console.log(this.props.register(this.state))
     }
     register =()=>{
         this.props.history.push('/register')
