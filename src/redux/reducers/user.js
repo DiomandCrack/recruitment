@@ -1,15 +1,17 @@
 import Service from '../../utils/service';
-
+import _ from 'lodash'
 const service = new Service();
 const initState = {
     isAuth:false,
     msg:'',
     user:'',
+    email:'',
     pwd:'',
     type:'',
 }
 const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
 const ERROR_MESSAGE = 'ERROR_MESSAGE'
+
 
 //user actionCreator
 const errMsg=(msg)=>{
@@ -23,9 +25,9 @@ const registerSuccess = (data)=>{
 export const user=(state=initState,action) => {
    switch(action.type){
     case REGISTER_SUCCESS:
-        return {...state,isAuth:true,msg:'',...action.payload}
+        return {...state,isAuth:true,msg:'注册成功',...action.payload}
     case ERROR_MESSAGE:
-        return {...state,isAuth:false,...action.payload} 
+        return {...state,isAuth:false,msg:action.payload} 
     default:
         return state
    }
@@ -34,13 +36,13 @@ export const user=(state=initState,action) => {
 
 //async action creator
 export const register = (user,email,pwd,rpwd,type)=>{
-    if(!user){
+    if(!_.trim(user)){
         return errMsg('用户名不能为空');
     }
-    if(!email){
+    if(!_.trim(email)){
         return errMsg('邮箱不能为空');
     }
-    if(!pwd){
+    if(!_.trim(pwd)){
         return errMsg('密码不能为空');
     }
     if(pwd!==rpwd){

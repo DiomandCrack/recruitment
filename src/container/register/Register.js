@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import Logo from '../../components/logo/Logo'
 import {List,InputItem,WingBlank,WhiteSpace,Button,Radio} from 'antd-mobile'
 import {connect} from 'react-redux'
+
 import {register} from '../../redux/reducers/user'
+import './Register.css'
 
 @connect(
-    state=>{
-        console.log(state.user)
-        return state.user},
+    reducer=>{
+        return reducer.user},
     {register}
 )
 export default class Register extends Component{
@@ -16,6 +17,7 @@ export default class Register extends Component{
         email:'',
         pwd:'',
         rpwd:'',
+        msg:'',
         type:'seeker',
     }
     handleChange=(key,val)=>{
@@ -39,6 +41,7 @@ export default class Register extends Component{
                 <h2>注册新用户</h2>
                 <WhiteSpace/>
                 <List>
+                    {this.props.msg?<p className='alert'>{this.props.msg}</p>:null}
                     <InputItem
                         onChange={(value)=>this.handleChange('user',value)}
                     >用户名</InputItem>
