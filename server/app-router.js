@@ -1,6 +1,4 @@
-const Database = require('./database');
-const database = new Database();
-database.connect();
+
 class AppRouter {
     constructor(app) {
         this.app = app;
@@ -8,10 +6,10 @@ class AppRouter {
     }
     setUpRouter() {
         const app = this.app
-            /* 
-            @method:GET
-            @endpoint:/
-            */
+        /* 
+        @method:GET
+        @endpoint:/
+        */
         app.get('/', (req, res) => {
             res.send('Hello world');
         });
@@ -21,7 +19,7 @@ class AppRouter {
         @endpoint:/data
         */
         app.get('/data', (req, res, next) => {
-            database.findUser({}).then(
+            app.db.getModel('user').find({}).then(
                 (users) => {
                     res.json(users)
                 }

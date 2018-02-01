@@ -20,6 +20,7 @@ class AuthRoute extends Component {
             if (_.get(res,'status') === 200) {
                 if(_.get(res.data,'code')===0){
                     //user login
+                    console.log('login')
                 }else{
                     this.props.history.push('/login');
                 }

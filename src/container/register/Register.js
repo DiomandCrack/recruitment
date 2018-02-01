@@ -7,8 +7,7 @@ import {register} from '../../redux/reducers/user'
 import './Register.css'
 
 @connect(
-    reducer=>{
-        return reducer.user},
+    reducer=>reducer.user,
     {register}
 )
 export default class Register extends Component{

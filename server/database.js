@@ -2,14 +2,31 @@ const mongoose = require('mongoose');
 
 const DB_URL = 'mongodb://127.0.0.1:27017/recruit';
 
-const User = mongoose.model('user', new mongoose.Schema({
-    user: { type: String, require: true },
-    age: { type: Number, require: true },
-}));
+const models = {
+    user:{
+        'user':{type:String,require:true},
+        'pwd':{type:String,require:true},
+        'type':{type:String,require:true},
+        'avatar':{type:String,require:true},
+        //resume
+        'doc':{type:String},
+        //offer
+        'title':{type:String},
+        //boss
+        'company':{type:String},
+        'money':{type:String},
+    },
+    message:{
 
-// User.update({ 'user': 'xiaohua' }, { '$set': { age: 26 } }, (err, result) => {
-//     console.log(err ? err : result)
-// });
+    }
+}
+
+for(let model in models){
+    mongoose.model(model,new mongoose.Schema(
+        models[model]
+    ))
+}
+
 class Database {
     connect() {
         mongoose.connect(DB_URL)
@@ -17,21 +34,9 @@ class Database {
             console.log('mongoDB connect successfully');
         })
     }
-    createUser(user) {
-        return new Promise((resolve, reject) => {
-            User.create(user, (err, result) => {
-                err ? reject(err) : resolve(result);
-            });
-        });
-    }
-    findUser(user) {
-        console.log('find User', user)
-        return new Promise((resolve, reject) => {
-            User.find(user, (err, result) => {
-                console.log(result);
-                return err ? reject(err) : resolve(result);
-            })
-        });
+    getModel(modelName){
+        console.log(mongoose.model(modelName));
+        return mongoose.model(modelName)
     }
 }
 
