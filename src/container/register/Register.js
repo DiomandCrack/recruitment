@@ -28,7 +28,6 @@ export default class Register extends Component{
         })
     }
     handleRegister=()=>{
-        console.log(this.props)
         this.props.register(this.state);
     }
 

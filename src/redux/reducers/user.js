@@ -25,8 +25,6 @@ const registerSuccess = (data)=>{
 export const user=(state=initState,action) => {
    switch(action.type){
     case REGISTER_SUCCESS:
-        console.log(action.payload)
-        console.log({...state,...action.payload,isAuth:true,msg:'注册成功'})
         return {...state,...action.payload,isAuth:true,msg:'注册成功'}
     case ERROR_MESSAGE:
         return {isAuth:false,msg:action.payload} 
