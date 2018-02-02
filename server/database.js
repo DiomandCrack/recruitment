@@ -35,7 +35,6 @@ class Database {
         })
     }
     getModel(modelName){
-        console.log(mongoose.model(modelName));
         return mongoose.model(modelName)
     }
 }

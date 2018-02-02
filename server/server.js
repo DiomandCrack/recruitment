@@ -1,10 +1,9 @@
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const Model = require('./models');
-const userRouter = require('./userRouter')
-const AppRouter = require('./app-router');
 const Database = require('./database');
 
 const app = express();
@@ -12,6 +11,8 @@ const app = express();
 app.use(cors({
     exposedHeaders: "*"
 }));
+
+app.use(cookieParser());
 
 app.use(bodyParser.json({
     limit: '50mb'

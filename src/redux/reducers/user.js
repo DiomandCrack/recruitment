@@ -25,9 +25,11 @@ const registerSuccess = (data)=>{
 export const user=(state=initState,action) => {
    switch(action.type){
     case REGISTER_SUCCESS:
-        return {...state,isAuth:true,msg:'注册成功',...action.payload}
+        console.log(action.payload)
+        console.log({...state,...action.payload,isAuth:true,msg:'注册成功'})
+        return {...state,...action.payload,isAuth:true,msg:'注册成功'}
     case ERROR_MESSAGE:
-        return {...state,isAuth:false,msg:action.payload} 
+        return {isAuth:false,msg:action.payload} 
     default:
         return state
    }
@@ -35,31 +37,29 @@ export const user=(state=initState,action) => {
 
 
 //async action creator
-export const register = (user,email,pwd,rpwd,type)=>{
-    if(!_.trim(user)){
+export const register = (userObj)=>{
+    if(!_.trim(_.get(userObj,'user'))){
         return errMsg('用户名不能为空');
     }
-    if(!_.trim(email)){
+    if(!_.trim(_.get(userObj,'email'))){
         return errMsg('邮箱不能为空');
     }
-    if(!_.trim(pwd)){
+    if(!_.trim(_.get(userObj,'pwd'))){
         return errMsg('密码不能为空');
     }
-    if(pwd!==rpwd){
+    if(_.get(userObj,'pwd')!==_.get(userObj,'rpwd')){
         return errMsg('密码和确认密码必须相同');
     }
-    const registerUser = {
-        user,
-        email,
-        pwd,
-        type,
-    }
     return dispatch => {
-        service.post('user/register',registerUser).then(
+        service.post(`user/register`,userObj).then(
             res=>{
-                res.status ===200&&res.data.code===0?dispatch(registerSuccess(registerUser)):dispatch(errMsg(res.data.msg))
+                if(res.status ===200&&res.data.code===0){
+                    dispatch(registerSuccess(userObj))
+                }else{
+                    dispatch(errMsg(res.data.msg))
+                }
             }
-        );
+        ).catch((err)=>console.log(err));
 
     }
 }

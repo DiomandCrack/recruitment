@@ -7,7 +7,10 @@ import {register} from '../../redux/reducers/user'
 import './Register.css'
 
 @connect(
-    reducer=>reducer.user,
+    state=>{
+        console.log(state);
+        return state.user
+    },
     {register}
 )
 export default class Register extends Component{
@@ -25,13 +28,10 @@ export default class Register extends Component{
         })
     }
     handleRegister=()=>{
+        console.log(this.props)
         this.props.register(this.state);
-        console.log(this.state);
-        console.log(this.props.register(this.state))
     }
-    register =()=>{
-        this.props.history.push('/register')
-    }
+
     render(){
         const {RadioItem} = Radio;
         return (
