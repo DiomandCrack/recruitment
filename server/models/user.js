@@ -87,12 +87,14 @@ class User {
             //     res.json(errMsg('登陆失败'))
             // })
             this.login(loginUser).then(
-                (user)=>{
-                console.log(user)
-                const userF = Object.assign({},user)
-                
-                console.log(userF)           
-                return res.status(200).json(user)
+                (result)=>{       
+                    
+                //delete pwd,_.unset doesn't work
+                //_.unset(email,'pwd')
+                //this way work....
+                const {_id,user,email,type}=result;
+                const resultUser = {_id,user,email,type};
+                return res.status(200).json(sucAuth(resultUser))
                 }
             ).catch(
                 (err)=>err
@@ -167,7 +169,7 @@ class User {
                     if (!isMatch) {
                         return reject(errMsg('用户名或密码错误'))
                     }
-                    _.unset(result, 'pwd')
+                    console.log(result)
                     return resolve(result)
                 }
             ).catch(
@@ -177,7 +179,7 @@ class User {
     }
     findUserByEmail(user){
         const userDb = this.userDb;
-        const email = _.get(user,'email');
+        const email = _.get(user,'email','');
         return new Promise((resolve,reject)=>{
             userDb.findOne({email},(err,result)=>{
                 return err?reject(err):resolve(result);
