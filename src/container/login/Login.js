@@ -1,28 +1,56 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import {connect} from 'react-redux'
+import {Redirect} from 'react-router-dom'
+
 import Logo from '../../components/logo/Logo'
 import {List,InputItem,WingBlank,WhiteSpace,Button} from 'antd-mobile'
+import {login} from '../../redux/reducers/user'
 
+@connect(
+    state=>state.user,
+    {login}
+)
 export default class Login extends Component {
+    state = {
+        email:'',
+        pwd:'',
+    }
     register =()=>{
         this.props.history.push('/register')
+    }
+    handleChange=(key,val)=>{
+        this.setState({
+            [key]:val
+        })
+    }
+    handleLogin=()=>{
+        this.props.login(this.state);
     }
     render(){
         return(
             <div>
+                {this.props.redirectTo?<Redirect to={this.props.redirectTo}/>:null}
                 <Logo/>
                 <h2>登陆页面</h2>
                 <WingBlank>
                     <List>
-                        <InputItem>
-                            用户
+                    {this.props.msg?<p className='alert'>{this.props.msg}</p>:null}
+                        <InputItem
+                            type='email'
+                            onChange={(value)=>this.handleChange('email',value)}
+                        >
+                            邮箱
                         </InputItem>
                         <WhiteSpace/>
-                        <InputItem>
+                        <InputItem
+                            onChange={(value)=>this.handleChange('pwd',value)}
+                            type='password'
+                        >
                             密码
                         </InputItem>
                     </List>
                     <WhiteSpace/>
-                    <Button type='primary'>登陆</Button>
+                    <Button type='primary' onClick={this.handleLogin}>登陆</Button>
                     <WhiteSpace/>
                     <Button onClick={this.register} type='primary'>注册</Button>
                 </WingBlank>

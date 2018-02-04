@@ -5,6 +5,7 @@ const DB_URL = 'mongodb://127.0.0.1:27017/recruit';
 const models = {
     user:{
         'user':{type:String,require:true},
+        'email':{type:String,require:true},
         'pwd':{type:String,require:true},
         'type':{type:String,require:true},
         'avatar':{type:String,require:true},

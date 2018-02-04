@@ -14,7 +14,13 @@ window.devToolsExtension ? window.devToolsExtension : compose
 window.devToolsExtension ? window.devToolsExtension() : compose
 ```
 
-## 怎么提交都显示：邮箱不能为空
+## 注册：怎么提交都显示：邮箱不能为空
+
+### 1.antd的onChange事件
+
+antd的事件没有event 直接value
+
+### 2.actionCreator传参错误
 
 在reducer的user中 actionCreator:`regiser`的参数是user的一系列参数 而在`Register`的组件调用的时候传入的是user对象
 所以所有信息都以一个对象的形式存放在了`state`的`user`的属性中
@@ -42,7 +48,7 @@ handleRegister=()=>{
 }
 ```
 
-### 修正结果
+#### 修正结果
 
 将一系列的参数，变成一个参数
 

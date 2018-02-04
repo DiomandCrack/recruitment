@@ -7,18 +7,10 @@ import {BrowserRouter,Route,Redirect,Switch,link} from 'react-router-dom'
 import {store} from './redux/store'
 import AuthRoute from './components/authroute/AuthRoute'
 import {AxiosInterceptors} from './utils/config'
-import Service from './utils/service'
 import Login from './container/login/Login'
 import Register from './container/register/Register'
 
-const service = new Service();
-// new AxiosInterceptors();
-
-service.get('data').then(
-    (response)=>{
-        console.log(response.data);
-    }
-)
+new AxiosInterceptors();
 
 function Boss (){
     return (
