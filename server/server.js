@@ -9,7 +9,10 @@ const Database = require('./database');
 const app = express();
 
 app.use(cors({
-    exposedHeaders: "*"
+    exposedHeaders: "*",
+    credentials:true,
+    origin: 'http://localhost:3000'
+    //if origin:* throw error
 }));
 
 app.use(cookieParser());

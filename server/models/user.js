@@ -52,10 +52,11 @@ class User {
                 //this way work....
                 const {_id,user,email,type}=result;
                 const resultUser = {_id,user,email,type};
+                res.cookie('userid',result._id)
                 return res.status(200).json(sucAuth(resultUser))
                 }
             ).catch(
-                (err)=>err
+                (err)=>res.json(err)
             )
         });
         /*
@@ -66,29 +67,12 @@ class User {
         Router.post('/register',(req,res,next)=>{
             console.log('register user',req.body)
             const registerUser = req.body;
-            // //bcrypt encryption
-            // _.unset(registerUser,'rpwd');
-            // const pwd =  _.get(registerUser, 'pwd');
-            // const hashPwd = bcrypt.hashSync(pwd,saltRound);
-            // const userFormatted = {...registerUser,pwd:hashPwd};
- 
-            // userDb.find({$or:[{user:_.get(registerUser,'user')},{email:_.get(registerUser,'email')}]},(err,result)=>{
-            //     console.log(result)
-            //     if(_.get(result,'length')!==0){
-            //         return res.json(errMsg('用户名或邮箱已被注册'))
-            //     }
-            //     userDb.create(userFormatted,(err,data)=>{
-            //         if(err){
-            //             return res.json(errMsg('服务器错误'))
-            //         }
-            //         return res.json({code:0})
-            //     })
-            // })
+
             this.find(registerUser).then((result)=>{
-                console.log('result',result)
                 if(_.get(result,'length')!==0){
                     return res.json(errMsg('用户名或邮箱已被注册'))
                 }
+
                 this.create(registerUser).then(()=>{
                     return res.status(200).json(sucAuth());
                 })
@@ -112,12 +96,12 @@ class User {
             this.findUserByEmail(user).then(
                 (result)=>{
                     if(!result){
-                        return reject(errMsg('用户名或密码错误'))
+                        return reject(errMsg('邮箱或密码错误'))
                     }
                     const hashPassword = _.get(result, 'pwd');
                     const isMatch = bcrypt.compareSync(password, hashPassword);
                     if (!isMatch) {
-                        return reject(errMsg('用户名或密码错误'))
+                        return reject(errMsg('邮箱或密码错误'))
                     }
                     console.log(result)
                     return resolve(result)

@@ -1,6 +1,6 @@
 # Issues
 
-## 报错:Expected the reducer to be a function.
+## 报错:Expected the reducer to be a function
 
 报错原因`devToolsExtension`没有执行
 
@@ -93,3 +93,31 @@ const resultUser = {_id,user,email,type};
 return res.status(200).json(sucAuth(resultUser));
 ```
 
+## cookie不能跨域
+
+cookie遵循同源策略 不允许跨域
+
+解决办法
+
+后端server:设置响应头`Access-Control-Allow-Credentials:true`
+
+```js
+app.use(cors({
+    exposedHeaders: "*",
+    credentials:true,
+    origin: 'http://localhost:3000'
+}));
+```
+
+cors中间件 默认`origin:*`,如果设置`credentials:ture`会报错 必须指定前端地址
+
+前端`ajax`:`xhr.withCredentials=true`指定请求发送凭据
+
+```js
+const ins = axios.create({
+    withCredentials: true
+})
+
+```
+
+创建一个axios实例,设置`withCredentials: true`
