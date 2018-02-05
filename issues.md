@@ -66,3 +66,30 @@ export const register = (userObj)=>{
         ).catch((err)=>console.log(err));
     }
 ```
+
+## 登陆时 无法删除`res.date`中的密码
+
+原因:不知道,可能是异步操作的结果???
+
+用lodash或delete都不好使
+
+```js
+_.unset(result,'pwd')
+```
+
+```js
+delete result.pwd
+```
+
+解决方法
+
+先将`result`中的属性分别存到变量中,再将变量存到一个新的对象中就好使了....
+
+这是为啥啊....
+
+```js
+const {_id,user,email,type}=result;
+const resultUser = {_id,user,email,type};
+return res.status(200).json(sucAuth(resultUser));
+```
+

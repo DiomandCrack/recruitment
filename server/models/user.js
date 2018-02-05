@@ -35,8 +35,7 @@ class User {
 
         Router.get('/info', (req, res, next) => {
             //validate cookie
-
-            return res.json({ code: 0 });
+            return res.json({ code: 1 });
         });
         /*
         user login
@@ -45,52 +44,11 @@ class User {
         */
         Router.post('/login',(req,res,next)=>{
             const loginUser = _.get(req,'body');
-            // const email = _.get(loginUser,'email');
-            // const pwd = _.get(loginUser,'pwd');
-            // User.findOne({email},(err,result)=>{
-            //     if(err){
-            //         return res.json(errMsg('登陆失败'));
-            //     }
-            //     if(!result){
-            //         return res.json(errMsg('邮箱或密码错误'))
-            //     }
-            //     //match password
-            //     const hashPassword = _.get(result,'pwd');
-            //     const isMatch = bcrypt.compareSync(pwd,hashPassword);
-            //     if(!isMatch){
-            //         return res.json(errMsg('邮箱或密码错误'))
-            //     }
-            //     //delete password from mongoDB
-            //     _.unset(result, 'pwd');
-            //     console.log(result);
-            //     return res.json({code:0,data:result})
-            // });
-            // this.findUserByEmail(loginUser).then(
-            //     (result)=>{
-            //         //match password
-            //         if(!result){
-            //             return res.json(errMsg('邮箱或密码错误'))
-            //         }
-            //         const pwd = _.get(loginUser,'pwd');
-            //         const hashPassword = _.get(result,'pwd');
-            //         const isMatch = bcrypt.compareSync(pwd,hashPassword);
-            //         _.unset(result, 'pwd');
-            //         if(!isMatch){
-            //             return res.json(errMsg('邮箱或密码错误'))
-            //         }
-            //         //delete password from mongoDB
-                   
-            //         return res.json({code:0,data:result})
-            //     }
-            // ).catch((err)=>{
-            //     console.log(err)
-            //     res.json(errMsg('登陆失败'))
-            // })
+
             this.login(loginUser).then(
                 (result)=>{       
-                    
                 //delete pwd,_.unset doesn't work
-                //_.unset(email,'pwd')
+                //_.unset(result,'pwd')
                 //this way work....
                 const {_id,user,email,type}=result;
                 const resultUser = {_id,user,email,type};
@@ -108,23 +66,35 @@ class User {
         Router.post('/register',(req,res,next)=>{
             console.log('register user',req.body)
             const registerUser = req.body;
-            //bcrypt encryption
-            _.unset(registerUser,'rpwd');
-            const pwd =  _.get(registerUser, 'pwd');
-            const hashPwd = bcrypt.hashSync(pwd,saltRound);
-            const userFormatted = {...registerUser,pwd:hashPwd};
+            // //bcrypt encryption
+            // _.unset(registerUser,'rpwd');
+            // const pwd =  _.get(registerUser, 'pwd');
+            // const hashPwd = bcrypt.hashSync(pwd,saltRound);
+            // const userFormatted = {...registerUser,pwd:hashPwd};
  
-            userDb.find({$or:[{user:_.get(registerUser,'user')},{email:_.get(registerUser,'email')}]},(err,result)=>{
-                console.log(result)
+            // userDb.find({$or:[{user:_.get(registerUser,'user')},{email:_.get(registerUser,'email')}]},(err,result)=>{
+            //     console.log(result)
+            //     if(_.get(result,'length')!==0){
+            //         return res.json(errMsg('用户名或邮箱已被注册'))
+            //     }
+            //     userDb.create(userFormatted,(err,data)=>{
+            //         if(err){
+            //             return res.json(errMsg('服务器错误'))
+            //         }
+            //         return res.json({code:0})
+            //     })
+            // })
+            this.find(registerUser).then((result)=>{
+                console.log('result',result)
                 if(_.get(result,'length')!==0){
                     return res.json(errMsg('用户名或邮箱已被注册'))
                 }
-                userDb.create(userFormatted,(err,data)=>{
-                    if(err){
-                        return res.json(errMsg('服务器错误'))
-                    }
-                    return res.json({code:0})
+                this.create(registerUser).then(()=>{
+                    return res.status(200).json(sucAuth());
                 })
+            }).catch(err=>{
+                console.log('err',err)
+                return res.json(err)
             })
         })
 
@@ -139,26 +109,6 @@ class User {
             //     return reject({ message: 'login error' })
             // }
 
-            //find in database with email
-            // this.findUserByEmail(email, (err, result) => {
-            //     if (err) {
-            //         return reject(err);
-            //     }
-            //     const hashPassword = _.get(result, 'password');
-            //     const isMatch = bcrypt.compareSync(password, hashPassword);
-            //     // return isMatch ? resolve(result) : reject({ message: 'login error' })
-            //     if (!isMatch) {
-            //         return reject({ message: 'login error' })
-            //     }
-            //     //user login successfully creat new token to token collection.
-            //     const userId = _.get(result, '_id')
-            //     this.app.models.token.create(userId).then((token) => {
-            //         token.user = result
-            //         return resolve(token);
-            //     }).catch(() => {
-            //         return reject({ message: 'login error' })
-            //     })
-            // })
             this.findUserByEmail(user).then(
                 (result)=>{
                     if(!result){
@@ -177,6 +127,35 @@ class User {
             )
         })
     }
+    create(user){
+        return new Promise((resolve,reject)=>{
+            //bcrypt encryption
+            _.unset(user,'rpwd');
+            const pwd =  _.get(user, 'pwd');
+            const hashPwd = bcrypt.hashSync(pwd,saltRound);
+            const userFormatted = {...user,pwd:hashPwd};
+
+            this.userDb.create(userFormatted,(err,result)=>{
+                return err?reject(err):resolve(result)
+            })
+        })
+    }
+    find(user){
+        const errMsg = this.errorMessage
+        return new Promise((resolve,reject)=>{
+            const userName = _.get(user,'user');
+            const email = _.get(user,'email')
+            const query = {
+                '$or':[
+                    {user:userName},
+                    {email}
+                ]
+            }
+            this.userDb.find(query,(err,result)=>{
+                return err?reject(errMsg('服务器错误')):resolve(result)
+            })
+        })
+    }
     findUserByEmail(user){
         const userDb = this.userDb;
         const email = _.get(user,'email','');
@@ -189,7 +168,7 @@ class User {
     errorMessage(msg){
         return {code:1,msg}
     }
-    successAuth(data){
+    successAuth(data=null){
         return {code:0,data}
     }
 }
