@@ -121,3 +121,22 @@ const ins = axios.create({
 ```
 
 创建一个axios实例,设置`withCredentials: true`
+
+## 报错:TypeError: Cannot read property 'findOne' of undefined
+
+原因: 刷新`/info` 操作数据库没有进行异步操作
+
+解决方法:
+
+封装了一个方法使用`promise`通过`_id`来读取数据
+
+```js
+findUserById(id){
+    const userDb = this.userDb;
+    return new Promise((resolve,reject)=>{
+        userDb.findOne({_id:new ObjectID(id)},_filter,(err,result)=>{
+            return err?reject(err):resolve(result)
+        });
+    })
+}
+```

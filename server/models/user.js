@@ -1,10 +1,11 @@
 const bcrypt = require('bcrypt');
 const _ = require('lodash');
 const express = require('express');
+const {ObjectID} = require('mongodb');
 
 const Router = express.Router();
 const saltRound = 10;
-
+const _filter={'pwd':0,'__v':0}
 class User {
     constructor(app){
         this.app = app;
@@ -35,7 +36,16 @@ class User {
 
         Router.get('/info', (req, res, next) => {
             //validate cookie
-            return res.json({ code: 1 });
+            const {userId} = req.cookies
+
+            this.findUserById(userId).then((result)=>{
+                if(!result){
+                    return res.json(errMsg('登陆失败'));
+                }
+                return res.json(sucAuth(result));
+                
+            }).catch(err=>res.json(errMsg('登陆失败')))
+            
         });
         /*
         user login
@@ -52,7 +62,7 @@ class User {
                 //this way work....
                 const {_id,user,email,type}=result;
                 const resultUser = {_id,user,email,type};
-                res.cookie('userid',result._id)
+                res.cookie('userId',result._id)
                 return res.status(200).json(sucAuth(resultUser))
                 }
             ).catch(
@@ -87,13 +97,14 @@ class User {
 
     login(user){
         const password = _.get(user, 'pwd', '');
+        const email = _.get(user,'email','');
         const errMsg = this.errorMessage;
         return new Promise((resolve, reject) => {
             // if (!password || !email || !isEmail(email)) {
             //     return reject({ message: 'login error' })
             // }
 
-            this.findUserByEmail(user).then(
+            this.findUserByEmail(email).then(
                 (result)=>{
                     if(!result){
                         return reject(errMsg('邮箱或密码错误'))
@@ -140,16 +151,23 @@ class User {
             })
         })
     }
-    findUserByEmail(user){
+    findUserByEmail(email){
         const userDb = this.userDb;
-        const email = _.get(user,'email','');
         return new Promise((resolve,reject)=>{
             userDb.findOne({email},(err,result)=>{
                 return err?reject(err):resolve(result);
             })
         });
     }
-    errorMessage(msg){
+    findUserById(id){
+        const userDb = this.userDb;
+        return new Promise((resolve,reject)=>{
+            userDb.findOne({_id:new ObjectID(id)},_filter,(err,result)=>{
+                return err?reject(err):resolve(result)
+            });
+        })
+    }
+    errorMessage(msg=''){
         return {code:1,msg}
     }
     successAuth(data=null){
