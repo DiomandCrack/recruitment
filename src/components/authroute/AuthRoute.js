@@ -1,31 +1,28 @@
 import React, { Component } from 'react'
-import Service from '../../utils/service'
 import {withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
 import _ from 'lodash'
 
+import {loadUser} from '../../redux/reducers/user'
+
 @withRouter
+@connect(
+    null,
+    {loadUser}
+)
 class AuthRoute extends Component {
     componentDidMount() {
         //get user info
         //login or not
         //user identity ? boss : seeker
         //finish user info
-        const service = new Service()
         const publicList = ['/login','/register']
         const pathname = this.props.location.pathname
         if(_.indexOf(publicList,pathname)!==-1){
             return null
         }
-        service.get('user/info').then(res => {
-            if (_.get(res,'status') === 200) {
-                if(_.get(res.data,'code')===0){
-                    //user login
-                    console.log('login')
-                }else{
-                    this.props.history.push('/login');
-                }
-            }
-        })
+        console.log(this.props.loadData)
+        this.props.loadUser();
     }
     render(){
         return(

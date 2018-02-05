@@ -140,3 +140,7 @@ findUserById(id){
     })
 }
 ```
+
+## SRP(Single Responsibility Principle) 单一责任原则
+
+> A class should have only one reason to change.
