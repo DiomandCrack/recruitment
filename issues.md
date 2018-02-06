@@ -144,3 +144,22 @@ findUserById(id){
 ## SRP(Single Responsibility Principle) 单一责任原则
 
 > A class should have only one reason to change.
+
+## 无法获取redux更新的state
+
+由于 actionCreator `loadUser` 是异步的 在`autoRouter`这个组件中无法获取`this.props.state`
+
+解决方法:在`loadUser`中传入`callback`函数
+
+```js
+componentDidUpdate(){
+        const props = _.get(this,'props')
+        props.loadUser()
+        const isAuth = _.get(props,'isAuth')
+        console.log(this.props)
+        if(!isAuth){
+            const history = _.get(props,'history')
+            history.push('login')
+        }
+}
+```

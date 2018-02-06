@@ -21,7 +21,7 @@ const LOAD_DATA = 'LOAD_DATA'
 
 //user actionCreator
 
-const errMsg=(msg)=>{
+const errMsg=(msg=null)=>{
 
     return {payload:msg,type:ERROR_MESSAGE}
 
@@ -49,31 +49,36 @@ export const user=(state=initState,action) => {
     case REGISTER_SUCCESS:
         return {...state,...action.payload,isAuth:true,msg:'注册成功',redirectTo:getRedirectPath(_.get(action,'payload'))}
     case ERROR_MESSAGE:
-        return {isAuth:false,msg:action.payload} 
+        return {...state,msg:action.payload,isAuth:false} 
     case LOGIN_SUCCESS:
         return {...state,...action.payload,isAuth:true,msg:'登陆成功',redirectTo:getRedirectPath(_.get(action,'payload'))}
     case LOAD_DATA:
-        return {...state,...action.payload}
+        return {...state,...action.payload,isAuth:true,msg:''}
     default:
         return state
    }
 
 }
 
-export const loadUser=()=>{
+export const loadUser=(cb=()=>{})=>{
     //get user info
     return (dispatch)=>{
         service.get('user/info').then(res => {
 
+            //get user info
+            //login or not
+            //user identity ? boss : seeker
+            //finish user info
             if (_.get(res,'status') === 200) {
                 if(_.get(res.data,'code')===0){
                     //user login
                     dispatch(loadData(res.data.data));
                 }else{
-                    this.props.history.push('/login');
-                    dispatch(errMsg(res.data.msg))
+                    cb()
+                    dispatch(errMsg('登陆失败'))
                 }
             }
+            
         }).catch(err=>console.log(err))
 
     }

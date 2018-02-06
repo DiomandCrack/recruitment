@@ -7,23 +7,23 @@ import {loadUser} from '../../redux/reducers/user'
 
 @withRouter
 @connect(
-    null,
+    state=>state.user,
     {loadUser}
 )
 class AuthRoute extends Component {
-    componentDidMount() {
-        //get user info
-        //login or not
-        //user identity ? boss : seeker
-        //finish user info
+    componentDidMount(){
         const publicList = ['/login','/register']
-        const pathname = this.props.location.pathname
+        const pathname = _.get(this,'props.location.pathname')
         if(_.indexOf(publicList,pathname)!==-1){
             return null
         }
-        console.log(this.props.loadData)
-        this.props.loadUser();
+        const props = _.get(this,'props')
+        props.loadUser(()=>{
+            const history = _.get(props,'history')
+            history.push('login')
+        })
     }
+
     render(){
         return(
 
