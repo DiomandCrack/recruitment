@@ -27,7 +27,25 @@ class User {
                 return res.json(list)
             })
         })
-
+        /*
+        info update
+        method:POST
+        endpoint:/user/update
+        */
+        Router.post('/update',(req,res,next)=>{
+            const {userId} = req.cookies;
+            if(!userId){
+                return res.json(errMsg('登陆失败'));
+            }
+            const {body} = req;
+            
+            this.findUserByIdAndUpdate(userId,body).then(result=>{
+                if(!result){
+                    return res.json(errMsg());
+                }
+                return res.json(sucAuth(result));
+            }).catch(err=>console.log(err))
+        })
         /*
         user info
         method:GET
@@ -36,7 +54,7 @@ class User {
 
         Router.get('/info', (req, res, next) => {
             //validate cookie
-            const {userId} = req.cookies
+            const {userId} = _.get(req,'cookies');
 
             this.findUserById(userId).then((result)=>{
                 if(!result){
@@ -174,6 +192,19 @@ class User {
                 return err?reject(err):resolve(result)
             });
         })
+    }
+    findUserByIdAndUpdate(id,data){
+        const User = this.User;
+        return new Promise((resolve,reject)=>{
+            User.findByIdAndUpdate(id,data,(err,result)=>{
+                const copyData = Object.assign({},{
+                    user:result.user,
+                    type:result.type
+                },data)
+                return err?reject(err):resolve(copyData);
+            })
+        });
+
     }
     copyUser(result){
         const {_id,user,email,type}=result;

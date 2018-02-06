@@ -132,9 +132,9 @@ const ins = axios.create({
 
 ```js
 findUserById(id){
-    const userDb = this.userDb;
+    const User = this.User;
     return new Promise((resolve,reject)=>{
-        userDb.findOne({_id:new ObjectID(id)},_filter,(err,result)=>{
+        User.findOne({_id:new ObjectID(id)},_filter,(err,result)=>{
             return err?reject(err):resolve(result)
         });
     })

@@ -6,7 +6,6 @@ import {getRedirectPath} from '../../utils/redirect'
 const service = new Service();
 const initState = {
     redirectTo:'',
-    isAuth:false,
     msg:'',
     user:'',
     email:'',
@@ -14,9 +13,8 @@ const initState = {
     type:'',
 }
 
-const REGISTER_SUCCESS = 'REGISTER_SUCCESS'
+const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const ERROR_MESSAGE = 'ERROR_MESSAGE'
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 const LOAD_DATA = 'LOAD_DATA'
 
 //user actionCreator
@@ -27,15 +25,9 @@ const errMsg=(msg=null)=>{
 
 }
 
-const registerSuccess = (user)=>{
+const authSuccess = (user)=>{
 
-   return {payload:user,type:REGISTER_SUCCESS}
-
-}
-
-const loginSuccess = (user) => {
-
-    return {payload:user,type:LOGIN_SUCCESS}
+   return {payload:user,type:AUTH_SUCCESS}
 
 }
 
@@ -46,18 +38,29 @@ const loadData = (user) => {
 export const user=(state=initState,action) => {
 
    switch(action.type){
-    case REGISTER_SUCCESS:
-        return {...state,...action.payload,isAuth:true,msg:'注册成功',redirectTo:getRedirectPath(_.get(action,'payload'))}
+    case AUTH_SUCCESS:
+        return {...state,...action.payload,redirectTo:getRedirectPath(_.get(action,'payload'))}
     case ERROR_MESSAGE:
         return {...state,msg:action.payload,isAuth:false} 
-    case LOGIN_SUCCESS:
-        return {...state,...action.payload,isAuth:true,msg:'登陆成功',redirectTo:getRedirectPath(_.get(action,'payload'))}
     case LOAD_DATA:
         return {...state,...action.payload,isAuth:true,msg:''}
     default:
         return state
    }
 
+}
+export const update = (data)=>{
+    return (dispatch)=>{
+        service.post('user/update',data).then(res=>{
+            if (_.get(res,'status') === 200) {
+                if(_.get(res.data,'code')===0){
+                    dispatch(authSuccess(res.data.data));
+                }else{
+                    dispatch(errMsg('登陆失败'))
+                }
+            }
+        })
+    }
 }
 
 export const loadUser=(cb=()=>{})=>{
@@ -78,7 +81,7 @@ export const loadUser=(cb=()=>{})=>{
                     dispatch(errMsg('登陆失败'))
                 }
             }
-            
+
         }).catch(err=>console.log(err))
 
     }
@@ -96,7 +99,7 @@ export const login = (userObj)=>{
                     //code status code
                     //msg error message
                     //data details data
-                    dispatch(loginSuccess(res.data.data))
+                    dispatch(authSuccess(res.data.data))
                 }else{
                     dispatch(errMsg(res.data.msg))
                 }
@@ -126,7 +129,7 @@ export const register = (userObj)=>{
         service.post(`user/register`,userObj).then(
             res=>{
                 if(res.status ===200&&res.data.code===0){
-                    dispatch(registerSuccess(userObj))
+                    dispatch(authSuccess(userObj))
                 }else{
                     dispatch(errMsg(res.data.msg))
                 }
@@ -135,3 +138,4 @@ export const register = (userObj)=>{
 
     }
 }
+
