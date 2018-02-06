@@ -147,19 +147,16 @@ findUserById(id){
 
 ## 无法获取redux更新的state
 
-由于 actionCreator `loadUser` 是异步的 在`autoRouter`这个组件中无法获取`this.props.state`
+由于 actionCreator `loadUser` 是异步的 在`AutoRouter`这个组件中无法获取更新后的`this.props.state`
 
 解决方法:在`loadUser`中传入`callback`函数
 
 ```js
-componentDidUpdate(){
-        const props = _.get(this,'props')
-        props.loadUser()
-        const isAuth = _.get(props,'isAuth')
-        console.log(this.props)
-        if(!isAuth){
-            const history = _.get(props,'history')
-            history.push('login')
-        }
+componentDidMount(){
+    const props = _.get(this,'props')
+    props.loadUser(()=>{
+        const history = _.get(props,'history')
+        history.push('login')
+    })
 }
 ```

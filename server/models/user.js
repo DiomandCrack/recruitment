@@ -10,11 +10,11 @@ class User {
     constructor(app){
         this.app = app;
         this.setApi();
-        this.userDb = app.db.getModel('user')
+        this.User = app.db.getModel('user')
     }
     setApi(){
         const app = this.app
-        const userDb = this.userDb
+        const User = this.User
         const errMsg = this.errorMessage;
         const sucAuth = this.successAuth;
         /*
@@ -23,7 +23,7 @@ class User {
         endpoint:/user/list
         */
         Router.get('/list',(req,res,next)=>{
-            userDb.find({},(err,list)=>{
+            User.find({},(err,list)=>{
                 return res.json(list)
             })
         })
@@ -60,8 +60,7 @@ class User {
                 //delete pwd,_.unset doesn't work
                 //_.unset(result,'pwd')
                 //this way work....
-                const {_id,user,email,type}=result;
-                const resultUser = {_id,user,email,type};
+                const resultUser = this.copyUser(result)
                 res.cookie('userId',result._id)
                 return res.status(200).json(sucAuth(resultUser))
                 }
@@ -83,8 +82,10 @@ class User {
                     return res.json(errMsg('用户名或邮箱已被注册'))
                 }
 
-                this.create(registerUser).then(()=>{
-                    return res.status(200).json(sucAuth());
+                this.create(registerUser).then((result)=>{
+                    const resultUser = this.copyUser(result)
+                    res.cookie('userId',result._id)
+                    return res.status(200).json(sucAuth(resultUser));
                 })
             }).catch(err=>{
                 console.log('err',err)
@@ -123,6 +124,7 @@ class User {
         })
     }
     create(user){
+        const User = this.User;
         return new Promise((resolve,reject)=>{
             //bcrypt encryption
             _.unset(user,'rpwd');
@@ -130,13 +132,19 @@ class User {
             const hashPwd = bcrypt.hashSync(pwd,saltRound);
             const userFormatted = {...user,pwd:hashPwd};
 
-            this.userDb.create(userFormatted,(err,result)=>{
+            const userModel = new User(userFormatted);
+            userModel.save((err,result)=>{
                 return err?reject(err):resolve(result)
             })
+
+            // User.create(userFormatted,(err,result)=>{
+            //     return err?reject(err):resolve(result)
+            // })
         })
     }
     find(user){
         const errMsg = this.errorMessage
+        const User = this.User
         return new Promise((resolve,reject)=>{
             const userName = _.get(user,'user');
             const email = _.get(user,'email')
@@ -146,26 +154,31 @@ class User {
                     {email}
                 ]
             }
-            this.userDb.find(query,(err,result)=>{
+            User.find(query,(err,result)=>{
                 return err?reject(errMsg('服务器错误')):resolve(result)
             })
         })
     }
     findUserByEmail(email){
-        const userDb = this.userDb;
+        const User = this.User;
         return new Promise((resolve,reject)=>{
-            userDb.findOne({email},(err,result)=>{
+            User.findOne({email},(err,result)=>{
                 return err?reject(err):resolve(result);
             })
         });
     }
     findUserById(id){
-        const userDb = this.userDb;
+        const User = this.User;
         return new Promise((resolve,reject)=>{
-            userDb.findOne({_id:new ObjectID(id)},_filter,(err,result)=>{
+            User.findOne({_id:new ObjectID(id)},_filter,(err,result)=>{
                 return err?reject(err):resolve(result)
             });
         })
+    }
+    copyUser(result){
+        const {_id,user,email,type}=result;
+        const resultUser = {_id,user,email,type};
+        return resultUser
     }
     errorMessage(msg=''){
         return {code:1,msg}
