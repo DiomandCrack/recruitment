@@ -9,23 +9,21 @@ import AuthRoute from './components/authroute/AuthRoute'
 import {AxiosInterceptors} from './utils/config'
 import Login from './container/login/Login'
 import Register from './container/register/Register'
+import BossInfo from './container/bossInfo/BossInfo'
 
 new AxiosInterceptors();
 
-function Boss (){
-    return (
-        <h1>Boss</h1>
-    )
-}
 
 ReactDom.render(
     (<Provider store={store}>
         <BrowserRouter>
             <div>
                 <AuthRoute/>
-                <Route path='/boss' componnet={Boss}></Route>
-                <Route path='/login' component={Login}></Route>
-                <Route path='/register' component={Register}></Route>
+                <Switch>
+                    <Route path='/bossinfo' component={BossInfo}></Route>
+                    <Route path='/login' component={Login}></Route>
+                    <Route path='/register' component={Register}></Route>
+                </Switch>
             </div>
         </BrowserRouter>
     </Provider>),
