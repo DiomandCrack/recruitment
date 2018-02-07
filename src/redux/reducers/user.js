@@ -51,6 +51,7 @@ export const user=(state=initState,action) => {
 }
 export const update = (data)=>{
     return (dispatch)=>{
+        console.log(data)
         service.post('user/update',data).then(res=>{
             if (_.get(res,'status') === 200) {
                 if(_.get(res.data,'code')===0){

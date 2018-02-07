@@ -12,9 +12,7 @@ import {update} from '../../redux/reducers/user'
     {update},
 )
 export default class BossInfo extends Component {
-    static propTypes = {
-        selectAvatar:PropTypes.func.isRequired
-    }
+
     state = {
         title:'',
         company:'',
@@ -32,11 +30,11 @@ export default class BossInfo extends Component {
         })
     }
     render(){
-        const path = this.props.location.pathname
-        const redirect = this.props.redirect
+        const {pathname} = this.props.location
+        const redirect = this.props.redirectTo
         return(
             <div>
-                {redirect&&redirect!==path?<Redirect to={this.props.redirectTo}/>:null}
+                 {redirect&&redirect!==pathname?<Redirect to={this.props.redirectTo}/>:null}
                 <NavBar
                     mode='dark'
                     style={{height:'50px'}}

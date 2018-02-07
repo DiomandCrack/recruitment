@@ -14,7 +14,6 @@ class User {
     }
     setApi(){
         const app = this.app
-        const User = this.User
         const errMsg = this.errorMessage;
         const sucAuth = this.successAuth;
         /*
@@ -23,9 +22,12 @@ class User {
         endpoint:/user/list
         */
         Router.get('/list',(req,res,next)=>{
-            User.find({},(err,list)=>{
-                return res.json(list)
-            })
+
+            const {type} = _.get(req,'query','')
+
+            this.find({type}).then((result)=>{
+                return res.json(sucAuth(result))
+            }).catch(err=>{console.log(err)})
         })
         /*
         info update
@@ -43,6 +45,7 @@ class User {
                 if(!result){
                     return res.json(errMsg());
                 }
+                console.log(result)
                 return res.json(sucAuth(result));
             }).catch(err=>console.log(err))
         })
@@ -95,7 +98,7 @@ class User {
             console.log('register user',req.body)
             const registerUser = req.body;
 
-            this.find(registerUser).then((result)=>{
+            this.findByEmailOrId(registerUser).then((result)=>{
                 if(_.get(result,'length')!==0){
                     return res.json(errMsg('用户名或邮箱已被注册'))
                 }
@@ -160,8 +163,16 @@ class User {
             // })
         })
     }
+    find(user={}){
+        const User = this.User
+        return new Promise((resolve,reject)=>{
+            User.find(user,(err,result)=>{
+                return err?reject(err):resolve(result)
+            })
+        })
+    }
     //find user by id or email
-    find(user){
+    findByEmailOrId(user){
         const errMsg = this.errorMessage
         const User = this.User
         return new Promise((resolve,reject)=>{
@@ -202,6 +213,7 @@ class User {
                     user:result.user,
                     type:result.type
                 },data)
+                console.log(copyData)
                 return err?reject(err):resolve(copyData);
             })
         });

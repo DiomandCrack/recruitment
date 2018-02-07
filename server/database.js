@@ -10,12 +10,12 @@ const models = {
         'type':{type:String,require:true},
         'avatar':{type:String,require:true},
         //resume
-        'doc':{type:String},
+        'desc':{type:String},
         //offer
         'title':{type:String},
         //boss
         'company':{type:String},
-        'money':{type:String},
+        'payroll':{type:String},
     },
     message:{
 

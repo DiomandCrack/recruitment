@@ -10,12 +10,12 @@
     width: 100%;
 }
 
-.am-navbar {
+.fix-header.am-navbar {
     position: fixed;
     top: 0;
     width: 100%;
 }
 
 .page-content {
-    padding: 45px 5px;
+    padding: 50px 5px;
 }

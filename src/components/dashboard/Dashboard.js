@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {NavBar} from 'antd-mobile'
-import {Switch} from 'react-router'
+import {Switch,Route} from 'react-router'
 import _ from 'lodash'
 
 import NavLinkBar from '../navLink/NavLinkBar'
+import Boss from '../../components/boss/Boss'
 
 import '../files/icon.css'
 
-const Boss= ()=>{
-    return (<h2>Boss首页</h2>)
-}
 
 const Seeker = () => {
     return (<h2>求职首页</h2>)
@@ -23,6 +21,17 @@ const Message = () => {
 const User = () => {
     return (<h2>个人中心</h2>)
 }
+
+const routers = (navList)=>{
+    navList.map(item=>{
+        return (<Route 
+                    key={_.get(item,'path')} 
+                    path={_.get(item,'path')} 
+                    component={_.get(item,'component')}
+                ></Route>)
+    })
+}
+
 @connect(
     state=>state,
 )
@@ -72,9 +81,9 @@ export default class Dashboard extends Component {
                 _.get(showTitle,'title','首页')
             }
             </NavBar>
-            <div>
+            <div style={{marginTo:50}}>
                 <Switch>
-
+                    {routers(navList)}
                 </Switch>
             </div>
             <NavLinkBar data={navList}/>

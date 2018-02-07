@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {NavBar,InputItem,TextareaItem,WingBlank,Button} from 'antd-mobile'
 import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
 
 import AvatarSelector from '../../components/avatarSelector/AvatarSelector'
 import {Redirect} from 'react-router-dom'
@@ -12,9 +11,7 @@ import {update} from '../../redux/reducers/user'
     {update},
 )
 export default class SeekerInfo extends Component {
-    static propTypes = {
-        selectAvatar:PropTypes.func.isRequired
-    }
+
     state = {
         title:'',
         desc:''
