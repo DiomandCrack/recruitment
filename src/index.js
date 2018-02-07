@@ -4,12 +4,15 @@ import ReactDom from 'react-dom'
 import { Provider } from 'react-redux'
 import {BrowserRouter,Route,Redirect,Switch,link} from 'react-router-dom'
 
+//redux
 import {store} from './redux/store'
-import AuthRoute from './components/authroute/AuthRoute'
 import {AxiosInterceptors} from './utils/config'
+//component
+import AuthRoute from './components/authroute/AuthRoute'
 import Login from './container/login/Login'
 import Register from './container/register/Register'
 import BossInfo from './container/bossInfo/BossInfo'
+import SeekerInfo from './container/seekerInfo/SeekerInfo'
 
 new AxiosInterceptors();
 
@@ -20,6 +23,7 @@ ReactDom.render(
             <div>
                 <AuthRoute/>
                 <Switch>
+                    <Route path='/seekerinfo' component={SeekerInfo}></Route>
                     <Route path='/bossinfo' component={BossInfo}></Route>
                     <Route path='/login' component={Login}></Route>
                     <Route path='/register' component={Register}></Route>

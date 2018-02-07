@@ -35,7 +35,7 @@ class User {
         Router.post('/update',(req,res,next)=>{
             const {userId} = req.cookies;
             if(!userId){
-                return res.json(errMsg('登陆失败'));
+                return res.json(errMsg(''));
             }
             const {body} = req;
             
@@ -160,6 +160,7 @@ class User {
             // })
         })
     }
+    //find user by id or email
     find(user){
         const errMsg = this.errorMessage
         const User = this.User
@@ -206,6 +207,7 @@ class User {
         });
 
     }
+    //clone
     copyUser(result){
         const {_id,user,email,type}=result;
         const resultUser = {_id,user,email,type};

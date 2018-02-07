@@ -11,15 +11,13 @@ import {update} from '../../redux/reducers/user'
     state=>state.user,
     {update},
 )
-export default class BossInfo extends Component {
+export default class SeekerInfo extends Component {
     static propTypes = {
         selectAvatar:PropTypes.func.isRequired
     }
     state = {
         title:'',
-        company:'',
-        payroll:'',
-        desc:'',
+        desc:''
     }
     handleChange = (key,value) =>{
         this.setState({
@@ -32,11 +30,10 @@ export default class BossInfo extends Component {
         })
     }
     render(){
-        const path = this.props.location.pathname
-        const redirect = this.props.redirect
+        const redirect = this.props.redirectTo
         return(
             <div>
-                {redirect&&redirect!==path?<Redirect to={this.props.redirectTo}/>:null}
+                {redirect?<Redirect to={this.props.redirectTo}/>:null}
                 <NavBar
                     mode='dark'
                     style={{height:'50px'}}
@@ -48,19 +45,13 @@ export default class BossInfo extends Component {
                     <InputItem onChange={(value)=>{this.handleChange('title',value)}}>
                         招聘职位
                     </InputItem>
-                    <InputItem onChange={(value)=>{this.handleChange('company',value)}}>
-                        公司名称
-                    </InputItem>
-                    <InputItem onChange={(value)=>{this.handleChange('payroll',value)}}>
-                        职位薪资
-                    </InputItem>
                     <TextareaItem 
                         onChange={(value)=>{this.handleChange('desc',value)}}
                         rows={3}
                         autoHeight
-                        title='职位要求'
+                        title='个人简介'
                         >
-                        职位要求
+                        个人简介
                     </TextareaItem>
                     <Button 
                         type='primary'
