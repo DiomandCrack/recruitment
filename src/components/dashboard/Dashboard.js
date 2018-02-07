@@ -23,13 +23,14 @@ const User = () => {
 }
 
 const routers = (navList)=>{
-    navList.map(item=>{
+    const routes = navList.map(item=>{
         return (<Route 
                     key={_.get(item,'path')} 
                     path={_.get(item,'path')} 
                     component={_.get(item,'component')}
                 ></Route>)
     })
+    return routes
 }
 
 @connect(

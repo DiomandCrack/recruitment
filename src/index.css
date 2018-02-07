@@ -19,3 +19,7 @@
 .page-content {
     padding: 50px 5px;
 }
+
+.am-card img {
+    width: 5rem;
+}
