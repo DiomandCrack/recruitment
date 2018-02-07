@@ -1,6 +1,10 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {NavBar} from 'antd-mobile'
+import {Switch} from 'react-router'
+import _ from 'lodash'
+
+import NavLinkBar from '../navLink/NavLinkBar'
 
 import '../files/icon.css'
 
@@ -31,15 +35,15 @@ export default class Dashboard extends Component {
             {
                 path:'/boss',
                 text:'求职者',
-                icon:'boss',
+                icon:'seeker',
                 title:'求职者列表',
                 component:Boss,
-                hide:user.type==='genius'
+                hide:user.type==='seeker'
             },
             {
-                path:'/genius',
-                text:'boss',
-                icon:'seeker',
+                path:'/seeker',
+                text:'BOSS',
+                icon:'boss',
                 title:'BOSS列表',
                 component:Seeker,
                 hide:user.type==='boss'
@@ -59,13 +63,21 @@ export default class Dashboard extends Component {
                 component:User,
             },
         ];
-
+        const showTitle = navList.find((item)=>{
+            return _.get(item,'path')===_.get(this,'props.location.pathname')
+        })
         return (
         <div>
-            <NavBar>
-                <i class='icon-user'></i>
+            <NavBar className='fixed-header' mode='dark'>{
+                _.get(showTitle,'title','首页')
+            }
             </NavBar>
-            <div>footer</div>
+            <div>
+                <Switch>
+
+                </Switch>
+            </div>
+            <NavLinkBar data={navList}/>
         </div>
         )
     }

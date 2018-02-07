@@ -30,10 +30,11 @@ export default class SeekerInfo extends Component {
         })
     }
     render(){
+        const {pathname} = this.props.location
         const redirect = this.props.redirectTo
         return(
             <div>
-                {redirect?<Redirect to={this.props.redirectTo}/>:null}
+                {redirect&&redirect!==pathname?<Redirect to={this.props.redirectTo}/>:null}
                 <NavBar
                     mode='dark'
                     style={{height:'50px'}}

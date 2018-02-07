@@ -15,7 +15,8 @@ import Login from './container/login/Login'
 import Register from './container/register/Register'
 import BossInfo from './container/bossInfo/BossInfo'
 import SeekerInfo from './container/seekerInfo/SeekerInfo'
-
+//index css
+import './index.css'
 
 new AxiosInterceptors();
 
