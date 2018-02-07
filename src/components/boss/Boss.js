@@ -11,10 +11,6 @@ export default class Boss extends Component {
         data:[]
     }
 
-    renderCards = (data) => {
-
-    }
-
     componentDidMount(){
         service.get('user/list?type=seeker').then(res=>{
             if(res.data.code===0){
@@ -27,18 +23,24 @@ export default class Boss extends Component {
         console.log(this.state)
         return (
             <WingBlank>
-                {        _.map(_.get(this,'state.data'),(item)=>(
-            _.get(item,'avatar')?
-            <Card>
-                <Card.Header
-                    title={_.get(item,'user')}
-                    thumb={require(`../files/images/${_.get(item,'avatar')}.png`)}
-                    extra={<span>{_.get(item,'title')}</span>}
-                >
-                </Card.Header>
-            </Card>:
-            null
-        ))}
+                <WhiteSpace/>
+                { _.map(_.get(this,'state.data'),(item)=>(
+                    _.get(item,'avatar')?
+                    <Card key={_.get(item,'_id')}>
+                        <Card.Header
+                            title={_.get(item,'user')}
+                            thumb={require(`../files/images/${_.get(item,'avatar')}.png`)}
+                            extra={<span>{_.get(item,'title')}</span>}
+                        >
+                        </Card.Header>
+                        <Card.Body>
+                            <pre style={{font:'inherit'}}>
+                            {_.get(item,'desc')}
+                            </pre>
+                        </Card.Body>
+                    </Card>:
+                    null
+                ))}
             </WingBlank>
         )
     }

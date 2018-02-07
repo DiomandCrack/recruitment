@@ -57,7 +57,7 @@ export const update = (data)=>{
                 if(_.get(res.data,'code')===0){
                     dispatch(authSuccess(res.data.data));
                 }else{
-                    dispatch(errMsg('登陆失败'))
+                    dispatch(errMsg(''))
                 }
             }
         })
@@ -79,7 +79,6 @@ export const loadUser=(cb=()=>{})=>{
                     dispatch(loadData(res.data.data));
                 }else{
                     cb()
-                    dispatch(errMsg('登陆失败'))
                 }
             }
 
