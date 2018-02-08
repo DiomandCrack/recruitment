@@ -221,8 +221,8 @@ class User {
     }
     //clone
     copyUser(result){
-        const {_id,user,email,type}=result;
-        const resultUser = {_id,user,email,type};
+        const {_id,user,email,type,avatar}=result;
+        const resultUser = {_id,user,email,type,avatar};
         return resultUser
     }
     errorMessage(msg=''){

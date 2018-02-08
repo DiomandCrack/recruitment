@@ -4,7 +4,7 @@ export const getRedirectPath=(user)=>{
     //user.type /boss /seeker
     //user.avatar /bossinfo /seekinfo
     let url = (_.get(user,'type')==='boss')?'/boss':'/seeker'
-    if(!_.get(user,'avatar')){
+    if(!_.get(user,'avatar',null)){
         url += 'info'
     }
     return url

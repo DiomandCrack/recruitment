@@ -1,32 +1,29 @@
 import React, { Component } from 'react'
 import {Card,WhiteSpace,WingBlank} from 'antd-mobile'
 import _ from 'lodash'
+import {connect} from 'react-redux'
+import {getUserList} from '../../redux/reducers/chat'
 
-import Service from '../../utils/service'
-
-const service = new Service();
-
+@connect(
+    state=>state.chatToUser,
+    {getUserList}
+)
 export default class Boss extends Component {
     state = {
         data:[]
     }
 
     componentDidMount(){
-        service.get('user/list?type=seeker').then(res=>{
-            if(res.data.code===0){
-                this.setState({data:res.data.data})
-            }
-        }).catch(err=>console.log(err));
+        this.props.getUserList('seeker')
     }
 
     render() {
-        console.log(this.state)
         return (
             <WingBlank>
                 <WhiteSpace/>
-                { _.map(_.get(this,'state.data'),(item)=>(
+                { _.map(_.get(this,'props.userList'),(item)=>(
                     _.get(item,'avatar')?
-                    <Card key={_.get(item,'_id')}>
+                    <Card key={_.get(item,'_id')} style={{marginTop:'1rem'}}>
                         <Card.Header
                             title={_.get(item,'user')}
                             thumb={require(`../files/images/${_.get(item,'avatar')}.png`)}
@@ -34,11 +31,13 @@ export default class Boss extends Component {
                         >
                         </Card.Header>
                         <Card.Body>
-                            <pre style={{font:'inherit'}}>
+                            <pre style={{font:'inherit',lineHeight:'1.5'}} >
                             {_.get(item,'desc')}
                             </pre>
                         </Card.Body>
-                    </Card>:
+                    </Card>
+                    
+                    :
                     null
                 ))}
             </WingBlank>
