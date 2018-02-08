@@ -28,6 +28,15 @@
     padding: 10px 0
 }
 
+.am-result img {
+    width: 100%;
+    padding-top: -5px;
+}
+
 .primary {
     color: #108ee9
+}
+
+pre {
+    font: inherit
 }
