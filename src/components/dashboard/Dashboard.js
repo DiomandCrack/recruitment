@@ -5,8 +5,9 @@ import {Switch,Route} from 'react-router'
 import _ from 'lodash'
 
 import NavLinkBar from '../navLink/NavLinkBar'
-import Boss from '../../components/boss/Boss'
-import Seeker from '../../components/seeker/Seeker'
+import Boss from '../boss/Boss'
+import Seeker from '../seeker/Seeker'
+import User from '../user/User'
 
 import '../files/icon.css'
 
