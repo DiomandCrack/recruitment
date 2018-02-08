@@ -15,10 +15,6 @@ const Message = () => {
     return (<h2>消息列表</h2>)
 }
 
-const User = () => {
-    return (<h2>个人中心</h2>)
-}
-
 const routers = (navList)=>{
     const routes = navList.map(item=>{
         return (<Route 
