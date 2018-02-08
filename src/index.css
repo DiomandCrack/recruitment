@@ -23,3 +23,11 @@
 .am-card img {
     width: 2rem;
 }
+
+.am-card .title {
+    padding: 10px 0
+}
+
+.primary {
+    color: #108ee9
+}

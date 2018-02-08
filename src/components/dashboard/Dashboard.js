@@ -6,13 +6,9 @@ import _ from 'lodash'
 
 import NavLinkBar from '../navLink/NavLinkBar'
 import Boss from '../../components/boss/Boss'
+import Seeker from '../../components/seeker/Seeker'
 
 import '../files/icon.css'
-
-
-const Seeker = () => {
-    return (<h2>求职首页</h2>)
-}
 
 const Message = () => {
     return (<h2>消息列表</h2>)
