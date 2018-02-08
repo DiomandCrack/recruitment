@@ -37,7 +37,7 @@ export default class User extends Component {
             <WhiteSpace/>
             <List>
                 <Item>
-                    <Button type='primary'>退出登录</Button>
+                    退出登录
                 </Item>
             </List>
         </div>
