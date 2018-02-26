@@ -176,7 +176,7 @@ class Hello extends Component{
         )
     }
 }
-
+//属性代理
 function WrapperHello(Comp){
     class WrapComp extends Component{
         render(){
@@ -191,4 +191,25 @@ function WrapperHello(Comp){
 }
 
 const hello = WrapperHello(Hello)
+
+
+//反向继承
+function WrapperHello(Comp){
+    class WrapComp extends Comp{
+        componentDidMount(){
+            console.log('hello')
+        }
+        render(){
+            return (
+            <Comp>
+            </Comp>)
+        }
+    }
+
+    return WrapComp
+}
+
+//react-redux中的@connect就是一个高阶组件
+//HOC high ordered component
+//有两个作用 属性代理 和 反向继承
 ```
