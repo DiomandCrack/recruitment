@@ -160,3 +160,35 @@ componentDidMount(){
     })
 }
 ```
+
+## 高阶组件
+
+函数可以当参数，函数可以当返回值
+
+```js
+
+class Hello extends Component{
+    render(){
+        return (
+            <div>
+                <h1>Hello,I'm Hello Component</h1>
+            </div>
+        )
+    }
+}
+
+function WrapperHello(Comp){
+    class WrapComp extends Component{
+        render(){
+            return(<div>
+                <p>最基本的高阶组件</p>
+                <Comp {...this.props}></Comp>
+                {/*装饰器*/}
+            </div>)
+        }
+    }
+    return WrapComp
+}
+
+const hello = WrapperHello(Hello)
+```
