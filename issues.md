@@ -225,4 +225,8 @@ const app = express();
 const server = http.Server(app);
 //websocket server
 const wss = io(server);
+
+server.listen(3001, () => {
+    console.log('app start at port 3001');
+});
 ```
