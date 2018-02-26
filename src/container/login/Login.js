@@ -1,30 +1,23 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
+import {List,InputItem,WingBlank,WhiteSpace,Button} from 'antd-mobile'
 
 import Logo from '../../components/logo/Logo'
-import {List,InputItem,WingBlank,WhiteSpace,Button} from 'antd-mobile'
+import form from '../../components/form/form'
 import {login} from '../../redux/reducers/user'
 
 @connect(
     state=>state.user,
     {login}
 )
+@form
 export default class Login extends Component {
-    state = {
-        email:'',
-        pwd:'',
-    }
     register =()=>{
         this.props.history.push('/register')
     }
-    handleChange=(key,val)=>{
-        this.setState({
-            [key]:val
-        })
-    }
     handleLogin=()=>{
-        this.props.login(this.state);
+        this.props.login(this.props.state);
     }
     render(){
         return(
@@ -37,13 +30,13 @@ export default class Login extends Component {
                     {this.props.msg?<p className='alert'>{this.props.msg}</p>:null}
                         <InputItem
                             type='email'
-                            onChange={(value)=>this.handleChange('email',value)}
+                            onChange={(value)=>this.props.handleChange('email',value)}
                         >
                             邮箱
                         </InputItem>
                         <WhiteSpace/>
                         <InputItem
-                            onChange={(value)=>this.handleChange('pwd',value)}
+                            onChange={(value)=>this.props.handleChange('pwd',value)}
                             type='password'
                         >
                             密码
