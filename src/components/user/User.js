@@ -1,20 +1,35 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
-import {Result,List,WhiteSpace,Button} from 'antd-mobile'
+import {Result,List,WhiteSpace,Modal} from 'antd-mobile'
 import _ from 'lodash'
+import browserCookies from 'browser-cookies'
+import {Redirect} from 'react-router-dom'
 
+import {logout} from '../../redux/reducers/user'
 @connect(
     state=>state.user,
-
+    {logout}
 )
 export default class User extends Component {
     
+    logout=()=>{
+       const alert = Modal.alert
+        alert('注销','确认退出登录？',[
+            {text:'取消',onPress:()=>console.log('cancel')},
+            {text:'确认',onPress:()=>{
+                browserCookies.erase('userId')
+                // window.location.href = window.location.href
+                this.props.logout()
+            }}
+        ])
+    }
+
     render() {
         const {avatar,type,company,title,desc,payroll} = _.get(this,'props')
-        const {Item} = List
+        const Item= List.Item
         const {Brief} = Item
-        console.log(this.props)
-        return (
+        
+        return this.props.user?(
         <div>
             {avatar?<Result
                 img={<img src={require(`../files/images/${avatar}.png`)} alt={`${avatar}`}/>}
@@ -36,11 +51,11 @@ export default class User extends Component {
             </List>
             <WhiteSpace/>
             <List>
-                <Item>
+                <Item onClick={this.logout}>
                     退出登录
                 </Item>
             </List>
         </div>
-        )
+        ):<Redirect to={this.props.redirectTo}/>
     }
 }

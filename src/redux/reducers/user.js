@@ -16,6 +16,7 @@ const initState = {
 const AUTH_SUCCESS = 'AUTH_SUCCESS'
 const ERROR_MESSAGE = 'ERROR_MESSAGE'
 const LOAD_DATA = 'LOAD_DATA'
+const LOG_OUT = 'LOG_OUT'
 
 //user actionCreator
 
@@ -34,6 +35,10 @@ const authSuccess = (user)=>{
 const loadData = (user) => {
     return {payload:user,type:LOAD_DATA}
 }
+
+export const logout = ()=>{
+    return {type:LOG_OUT}    
+}
 //reducer
 export const user=(state=initState,action) => {
 
@@ -44,6 +49,8 @@ export const user=(state=initState,action) => {
         return {...state,msg:action.payload,isAuth:false} 
     case LOAD_DATA:
         return {...state,...action.payload,isAuth:true,msg:''}
+    case LOG_OUT:
+        return {...initState,redirectTo:'/login'}
     default:
         return state
    }
