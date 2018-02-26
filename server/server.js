@@ -3,10 +3,13 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
+const app = express();
+//socket.io work with express
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
 const Model = require('./models');
 const Database = require('./database');
-
-const app = express();
 
 app.use(cors({
     exposedHeaders: "*",
@@ -26,6 +29,6 @@ app.db.connect();
 
 app.models = new Model(app);
 
-app.listen(3001, () => {
+server.listen(3001, () => {
     console.log('app start at port 3001');
 });

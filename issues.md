@@ -213,3 +213,16 @@ function WrapperHello(Comp){
 //HOC high ordered component
 //有两个作用 属性代理 和 反向继承
 ```
+
+## 绑定express和socket.io
+
+```js
+const express = require('express');
+const http = require('http');
+const io = require('socket.io');
+
+const app = express();
+const server = http.Server(app);
+//websocket server
+const wss = io(server);
+```
