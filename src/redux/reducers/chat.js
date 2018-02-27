@@ -30,6 +30,12 @@ export function chat(state=initState,action){
 function msgList(msgs){
     return {type:MSG_LIST,payload:msgs}
 }
+
+export function sendMsg({from,to,msg}){
+    return dispatch => {
+        realtime.sendMsg({from,to,msg})
+    }
+}
 export function getMsgList(){
     return dispatch => {
         service.get('user/msglist').then(res=>{

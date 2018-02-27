@@ -12,9 +12,8 @@ export default class Realtime {
         this.socket = socket
     }
 
-    sendMsg(msg){
-        console.log(msg,this)
-        this.socket.emit('sendMsg',{text:msg}) 
+    sendMsg(obj){
+        this.socket.emit('sendMsg',obj) 
     }
 
     receMsg(cb=()=>{}){

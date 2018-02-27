@@ -34,7 +34,11 @@ wss.on('connection',(socket)=>{
     console.log('user login');
     socket.on('sendMsg',(data)=>{
         //广播到全局
-        wss.emit('receMsg',data)
+        // console.log(data)
+        // wss.emit('receMsg',data)
+        const {from,to,msg}=data;
+        const chatId = [from,to].sort().join('_');
+        console.log(chatId);
     })
 })
 
