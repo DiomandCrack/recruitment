@@ -2,8 +2,15 @@ import React, { Component } from 'react'
 import {List,InputItem} from 'antd-mobile'
 import Realtime from '../../utils/realtime'
 
+import {connect} from 'react-redux'
+import {getMsgList} from '../../redux/reducers/chat'
+
 const realtime = new Realtime();
 
+@connect(
+    state=>state,
+    {getMsgList}
+)
 export default class Chat extends Component {
     state = {
         text:'',
@@ -11,14 +18,7 @@ export default class Chat extends Component {
     }
 
     componentDidMount(){
-        const that = this;
-        realtime.receMsg(
-            (data)=>{
-                that.setState({
-                    msg:[...this.state.msg,data.text]
-                })
-            }
-        );
+        this.props.getMsgList()
     }
     
     handleSubmit=()=>{
