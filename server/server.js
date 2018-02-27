@@ -32,6 +32,11 @@ app.models = new Model(app);
 
 wss.on('connection',(socket)=>{
     console.log('user login');
+    socket.on('sendMsg',(data)=>{
+        console.log(data.msg)
+        //广播到全局
+        wss.emit('receMsg',data)
+    })
 })
 
 server.listen(3001, () => {
