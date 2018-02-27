@@ -14,7 +14,7 @@ export default class Realtime {
 
     sendMsg(msg){
         console.log(msg,this)
-        this.socket.emit('sendMsg',{msg}) 
+        this.socket.emit('sendMsg',{text:msg}) 
     }
 
     receMsg(cb=()=>{}){

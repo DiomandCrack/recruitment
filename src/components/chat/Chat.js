@@ -23,7 +23,7 @@ export default class Chat extends Component {
     
     handleSubmit=()=>{
         realtime.sendMsg(this.state.text)
-        this.setState({msg:''})
+        this.setState({text:''})
         console.log(this.state)
     }
 
@@ -31,6 +31,9 @@ export default class Chat extends Component {
         console.log(this.props)
         return (
         <div>
+            {this.state.msg.map((item,i)=>{
+                return <p key={i}>{item}</p>
+            })}
             <div className="stick-footer">
                 <List>
                     <InputItem
