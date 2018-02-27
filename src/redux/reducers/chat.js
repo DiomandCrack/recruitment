@@ -32,7 +32,7 @@ function msgList(msgs){
 }
 export function getMsgList(){
     return dispatch => {
-        service.get('/user/msglist').then(res=>{
+        service.get('user/msglist').then(res=>{
             if(res.state===200&&res.data.code===0){
                 dispatch(msgList(res.data.msgs))
             }

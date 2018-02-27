@@ -11,6 +11,7 @@ class User {
         this.app = app;
         this.setApi();
         this.User = app.db.getModel('user')
+        this.Message = app.db.getModel('message')
     }
     setApi(){
         const app = this.app
@@ -28,6 +29,17 @@ class User {
             this.find({type}).then((result)=>{
                 return res.json(sucAuth(result))
             }).catch(err=>{console.log(err)})
+        })
+        /* 
+        msg list
+        method:GET
+        endpoint：user/getmsglist
+        */
+        Router.get('/msglist',(req,res,next)=>{
+            const user = req.cookies.user;
+            this.getMsgList(user).then(result=>{
+                return res.json(sucAuth(result))
+            }).catch(err=>console.log(err));
         })
         /*
         info update
@@ -218,6 +230,15 @@ class User {
             })
         });
 
+    }
+
+    getMsgList(user){
+        const Message = this.Message;
+        return new Promise((resolve,reject)=>{
+            Message.find({'$or':[{from:user,to:user}]},(err,result)=>{
+                return err?reject(err):resolve(result)
+            })
+        });
     }
     //clone
     copyUser(result){
