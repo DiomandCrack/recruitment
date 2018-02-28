@@ -38,7 +38,7 @@ export default class Chat extends Component {
 
         return (
         <div className='chat-page'>
-            <NavBar mode="dark">
+            <NavBar mode="dark" className='fix-header'>
                 {this.props.match.params.user}
             </NavBar>
             {this.props.chat.chatMsg.map((item)=>{

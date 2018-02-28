@@ -9,6 +9,8 @@ import Boss from '../boss/Boss'
 import Seeker from '../seeker/Seeker'
 import User from '../user/User'
 
+import {getMsgList,receMsg} from '../../redux/reducers/chat'
+
 import '../files/icon.css'
 
 const Message = () => {
@@ -28,9 +30,14 @@ const routers = (navList)=>{
 
 @connect(
     state=>state,
+    {getMsgList,receMsg}
 )
 export default class Dashboard extends Component {
-
+    
+    componentDidMount(){
+        this.props.getMsgList();
+        this.props.receMsg();
+    }
     
     render() {
         const user = this.props.user

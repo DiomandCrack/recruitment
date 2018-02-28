@@ -4,7 +4,13 @@ import {TabBar} from 'antd-mobile'
 import {withRouter} from 'react-router-dom'
 import _ from 'lodash'
 
+import {connect} from 'react-redux'
+
 import '../files/icon.css'
+
+@connect(
+    state=>state.chat,
+)
 
 @withRouter
 export default class NavLinkBar extends Component {
@@ -17,6 +23,7 @@ export default class NavLinkBar extends Component {
     const {pathname} = _.get(this,'props.location')
     const renderNavList = navList.map(item=>
     (<TabBar.Item
+        badge={item.path==='/msg'?this.props.unread:null}
         key={_.get(item,'path')}
         title={_.get(item,'text')}
         icon={<i className={`icon-${_.get(item,'icon')}`}></i>}
