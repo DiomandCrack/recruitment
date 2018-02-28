@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import {List,InputItem} from 'antd-mobile'
+import _ from 'lodash'
+import {List,InputItem,NavBar} from 'antd-mobile'
 import Realtime from '../../utils/realtime'
 
 import {connect} from 'react-redux'
@@ -32,22 +33,36 @@ export default class Chat extends Component {
 
     render() {
         console.log(this.props)
+        const targetId = _.get(this,'props.match.params.user');
+        const Item = List.Item
+
         return (
-        <div>
-            {this.state.msg.map((item,i)=>{
-                return <p key={i}>{item}</p>
-            })}
+        <div className='chat-page'>
+            <NavBar mode="dark">
+                {this.props.match.params.user}
+            </NavBar>
+            {this.props.chat.chatMsg.map((item)=>{
+                console.log(item.from,targetId)
+                return item.from === targetId?(
+                    <List key={item._id}>
+                        <Item>对方:{item.content}</Item>
+                    </List>
+                    ):(
+                    <List key={item._id} className='chat-me'>
+                        <Item>我:{item.content}</Item>
+                    </List>
+                    )}
+                )}
             <div className="stick-footer">
                 <List>
                     <InputItem
-                        placeholder='请输入'
+                        placeholder='输入聊天信息'
                         value={this.state.text}
                         onChange={val=>{
                             this.setState({text:val})
                         }}
                         extra={<span onClick={this.handleSubmit}>发送</span>}
                     >
-                        信息
                     </InputItem>
                 </List>
             </div>
