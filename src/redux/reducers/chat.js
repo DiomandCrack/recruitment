@@ -28,7 +28,7 @@ export function chat(state=initState,action){
     }
 }
 
-const msgList=(msgs)=>{
+const msgList=(msgs=[])=>{
     return {type:MSG_LIST,payload:msgs}
 }
 
@@ -53,8 +53,8 @@ export function sendMsg({from,to,msg}){
 export function getMsgList(){
     return dispatch => {
         service.get('user/msglist').then(res=>{
-            if(res.state===200&&res.data.code===0){
-                dispatch(msgList(res.data.msgs))
+            if(res.status===200&&res.data.code===0){
+                dispatch(msgList(res.data.data))
             }
         })
     }

@@ -38,6 +38,7 @@ class User {
         Router.get('/msglist',(req,res,next)=>{
             const user = req.cookies.user;
             this.getMsgList(user).then(result=>{
+                console.log(result)
                 return res.json(sucAuth(result))
             }).catch(err=>console.log(err));
         })
