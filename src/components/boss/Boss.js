@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {connect} from 'react-redux'
 
-import {getUserList} from '../../redux/reducers/chat'
+import {getUserList} from '../../redux/reducers/chatUser'
 
 import UserCard from '../userCard/UserCard'
 

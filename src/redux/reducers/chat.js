@@ -21,14 +21,28 @@ export function chat(state=initState,action){
         case MSG_LIST:
             return {...state,chatMsg:action.payload,unread:action.payload.filter(item=>!item.read).length}
         case MSG_RECE:
+            return {...state,chatMsg:[...state.chatMsg,action.payload]}
         case MSG_READ:
         default:
             return state
     }
 }
 
-function msgList(msgs){
+const msgList=(msgs)=>{
     return {type:MSG_LIST,payload:msgs}
+}
+
+const msgRecv=(msg)=>{
+    return {type:MSG_RECE,payload:msg}
+}
+
+export function receMsg(){
+    return dispatch=>{
+        realtime.receMsg((data)=>{
+            console.log('receMsg',data);
+            dispatch(msgRecv(data));
+        })
+    }
 }
 
 export function sendMsg({from,to,msg}){

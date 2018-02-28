@@ -37,8 +37,11 @@ wss.on('connection',(socket)=>{
         // console.log(data)
         // wss.emit('receMsg',data)
         const {from,to,msg}=data;
-        const chatId = [from,to].sort().join('_');
-        console.log(chatId);
+        const chat_id = [from,to].sort().join('_');
+        const Message = app.db.getModel('message');
+        Message.create({chat_id,from,to,content:msg},(err,result)=>{
+            wss.emit('receMsg',Object.assign({},result._doc))
+        });
     })
 })
 

@@ -235,7 +235,7 @@ class User {
     getMsgList(user){
         const Message = this.Message;
         return new Promise((resolve,reject)=>{
-            Message.find({'$or':[{from:user,to:user}]},(err,result)=>{
+            Message.find({},(err,result)=>{
                 return err?reject(err):resolve(result)
             })
         });
