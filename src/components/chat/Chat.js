@@ -5,7 +5,7 @@ import Realtime from '../../utils/realtime'
 
 import {connect} from 'react-redux'
 import {getMsgList,sendMsg,receMsg} from '../../redux/reducers/chat'
-
+import {getChatId} from '../../utils/support'
 const realtime = new Realtime();
 
 @connect(
@@ -14,6 +14,7 @@ const realtime = new Realtime();
 )
 
 export default class Chat extends Component {
+
     state = {
         text:'',
         msg:[]
@@ -39,7 +40,8 @@ export default class Chat extends Component {
         const targetId = _.get(this,'props.match.params.user');
         const Item = List.Item
         const users = this.props.chat.users
-
+        const chatId = getChatId(targetId,this.props.user._id)
+        const chatMsgs = this.props.chatMsg.filer(item=>item.chatId===chatId)
         if(!users[targetId]){
             return null
         }

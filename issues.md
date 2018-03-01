@@ -236,3 +236,7 @@ server.listen(3001, () => {
 ```js
 this.props.history.goBack()
 ```
+
+## Message中chat_id的作用
+
+将from和to的校验合成一个chatId 
