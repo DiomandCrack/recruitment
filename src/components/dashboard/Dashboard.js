@@ -8,15 +8,11 @@ import NavLinkBar from '../navLink/NavLinkBar'
 import Boss from '../boss/Boss'
 import Seeker from '../seeker/Seeker'
 import User from '../user/User'
-import Msg from '../msg/MsgList'
+import Message from '../msg/MsgList'
 
 import {getMsgList,receMsg} from '../../redux/reducers/chat'
 
 import '../files/icon.css'
-
-const Message = () => {
-    return (<h2>消息列表</h2>)
-}
 
 const routers = (navList)=>{
     const routes = navList.map(item=>{
