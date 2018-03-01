@@ -239,4 +239,16 @@ this.props.history.goBack()
 
 ## Message中chat_id的作用
 
-将from和to的校验合成一个chatId 
+将from和to的校验合成一个chatId
+
+## 来回切换dashbord和chat之后,再发送消息会一次发送很多条
+
+由于`dashboard`组件每次接环的时候,生命周期函数`componentDidMount`中的`receMsg()`都会执行一次,每执行一次`socket`都会绑定一次事件
+
+解决方法:
+
+```js
+if(this.props.chat.chatMsg.length){
+    this.props.receMsg();
+}
+```

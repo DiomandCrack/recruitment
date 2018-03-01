@@ -41,7 +41,7 @@ export default class Chat extends Component {
         const Item = List.Item
         const users = this.props.chat.users
         const chatId = getChatId(targetId,this.props.user._id)
-        const chatMsgs = this.props.chatMsg.filer(item=>item.chatId===chatId)
+        const chatMsgs = this.props.chat.chatMsg.filter(item=>item.chat_id===chatId)
         if(!users[targetId]){
             return null
         }
@@ -57,7 +57,7 @@ export default class Chat extends Component {
                 }}>
                 {users[targetId].name}
             </NavBar>
-            {this.props.chat.chatMsg.map((item)=>{
+            {chatMsgs.map((item)=>{
                 const avatar = require(`../files/images/${users[item.from].avatar}.png`)
                 return item.from === targetId?(
                     <List key={item._id}>

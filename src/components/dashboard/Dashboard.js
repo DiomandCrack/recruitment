@@ -35,8 +35,10 @@ const routers = (navList)=>{
 export default class Dashboard extends Component {
     
     componentDidMount(){
-        this.props.getMsgList();
-        this.props.receMsg();
+        if(!this.props.chat.chatMsg.length){
+            this.props.getMsgList();
+            this.props.receMsg();
+        }
     }
     
     render() {
