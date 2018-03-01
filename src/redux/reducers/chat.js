@@ -20,7 +20,7 @@ const initState = {
 export function chat(state=initState,action){
     switch(action.type){
         case MSG_LIST:
-            return {...state,chatMsg:action.payload.msgs,unread:action.payload.msgs.filter(item=>!item.read).length,users:action.payload.users}
+            return {...state,chatMsg:action.payload.msgs,unread:action.payload.msgs.filter(item=>!item.read&&item.to===action.payload.userId).length,users:action.payload.users}
         case MSG_RECE:
             return {...state,chatMsg:[...state.chatMsg,action.payload],unread:state.unread+1}
         case MSG_READ:
@@ -29,8 +29,8 @@ export function chat(state=initState,action){
     }
 }
 
-const msgList=(msgs=[],users)=>{
-    return {type:MSG_LIST,payload:{msgs,users}}
+const msgList=(msgs=[],users,userId)=>{
+    return {type:MSG_LIST,payload:{msgs,users,userId}}
 }
 
 const msgRecv=(msg)=>{
@@ -52,10 +52,13 @@ export function sendMsg({from,to,msg}){
     }
 }
 export function getMsgList(){
-    return dispatch => {
+    return (dispatch,getState) => {
+
         service.get('user/msglist').then(res=>{
             if(res.status===200&&res.data.code===0){
-                dispatch(msgList(res.data.msgs,res.data.users))
+                console.log(getState())
+                const userId = getState().user._id;
+                dispatch(msgList(res.data.msgs,res.data.users,userId))
             }
         })
     }
