@@ -24,12 +24,14 @@ export default class Chat extends Component {
 
     componentDidMount(){
         if(!this.props.chat.chatMsg.length){
-            this.props.getMsgList();
-            this.props.receMsg();
+            this.props.getMsgList()
+            this.props.receMsg()
         }
-        setTimeout(() => {
-            window.dispatchEvent(new Event('resize'))
-        }, 0);
+        fixCarousel()
+    }
+
+    componentDidUpdate(){
+        this.scrollMsgCon()
     }
     
     handleSubmit=()=>{
@@ -45,6 +47,15 @@ export default class Chat extends Component {
             showEmoji:!this.state.showEmoji
         })
         fixCarousel()
+        this.scrollMsgCon()
+    }
+
+    scrollMsgCon=()=>{
+        console.log(this)
+        console.log(_.get(this,'messagesRef'))
+        if(this.messagesRef){
+        this.messagesRef.scrollTop = this.messagesRef.scrollHeight
+        }
     }
     render() {
         console.log(this.props)
@@ -71,7 +82,11 @@ export default class Chat extends Component {
                 }}>
                 {users[targetId].name}
             </NavBar>
-            <div className='msg-content'>
+            <div className='msg-content' ref={(ref)=>{
+                console.log(ref)
+                this.messagesRef = ref
+                console.log(this.messagesRef)
+                }}>
                 {chatMsgs.map((item)=>{
                     const avatar = require(`../files/images/${users[item.from].avatar}.png`)
                     return item.from === targetId?(
@@ -89,7 +104,6 @@ export default class Chat extends Component {
                         )}
                 )}
             </div>
-            
             <div className="stick-footer">
                 <List>
                     <InputItem
