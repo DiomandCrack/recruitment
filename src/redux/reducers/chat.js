@@ -37,6 +37,16 @@ const msgRecv=(msg,userId)=>{
     return {type:MSG_RECE,payload:{msg,userId}}
 }
 
+export function readMsg(from){
+    return (dispatch,getState)=>{
+        // service.post('user/readmsg',{from})
+        // .then(res=>{
+        //     const userId = getState().user._id
+        // })
+        // .catch()
+    }
+}
+
 export function receMsg(){
     return (dispatch,getState)=>{
         realtime.receMsg((data)=>{

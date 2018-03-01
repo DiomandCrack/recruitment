@@ -4,14 +4,14 @@ import {List,InputItem,NavBar,Icon,Grid} from 'antd-mobile'
 import Realtime from '../../utils/realtime'
 
 import {connect} from 'react-redux'
-import {getMsgList,sendMsg,receMsg} from '../../redux/reducers/chat'
+import {getMsgList,sendMsg,receMsg,readMsg} from '../../redux/reducers/chat'
 import {getChatId,fixCarousel} from '../../utils/support'
 
 const realtime = new Realtime();
 
 @connect(
     state=>state,
-    {getMsgList,sendMsg,receMsg}
+    {getMsgList,sendMsg,receMsg,readMsg}
 )
 
 export default class Chat extends Component {
@@ -27,7 +27,9 @@ export default class Chat extends Component {
             this.props.getMsgList()
             this.props.receMsg()
         }
-        fixCarousel()
+        const to = this.props.match.params.user
+        console.log(to);
+        this.props.readMsg()
     }
 
     componentDidUpdate(){
