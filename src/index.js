@@ -24,7 +24,7 @@ new AxiosInterceptors();
 ReactDom.render(
     (<Provider store={store}>
         <BrowserRouter>
-            <div>
+            <div style={{height:'100%'}}>
                 <AuthRoute/>
                 <Switch>
                     <Route path='/seekerinfo' component={SeekerInfo}></Route>

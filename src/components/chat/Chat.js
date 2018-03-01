@@ -71,22 +71,25 @@ export default class Chat extends Component {
                 }}>
                 {users[targetId].name}
             </NavBar>
-            {chatMsgs.map((item)=>{
-                const avatar = require(`../files/images/${users[item.from].avatar}.png`)
-                return item.from === targetId?(
-                    <List key={item._id}>
-                        <Item
-                            thumb={avatar}
-                        >{item.content}</Item>
-                    </List>
-                    ):(
-                    <List key={item._id} className='chat-me'>
-                        <Item
-                            extra={<img src={avatar} alt={item._id}/>}
-                        >{item.content}</Item>
-                    </List>
-                    )}
+            <div className='msg-content'>
+                {chatMsgs.map((item)=>{
+                    const avatar = require(`../files/images/${users[item.from].avatar}.png`)
+                    return item.from === targetId?(
+                        <List key={item._id}>
+                            <Item
+                                thumb={avatar}
+                            >{item.content}</Item>
+                        </List>
+                        ):(
+                        <List key={item._id} className='chat-me'>
+                            <Item
+                                extra={<img src={avatar} alt={item._id}/>}
+                            >{item.content}</Item>
+                        </List>
+                        )}
                 )}
+            </div>
+            
             <div className="stick-footer">
                 <List>
                     <InputItem

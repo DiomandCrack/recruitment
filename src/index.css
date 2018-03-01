@@ -1,3 +1,12 @@
+html,
+body {
+    height: 100%;
+}
+
+#root {
+    height: 100%
+}
+
 .err-msg {
     color: #f50;
     padding-left: 10px;
@@ -47,7 +56,11 @@ pre {
 /*chat page*/
 
 .chat-page {
-    padding: 50px 0;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 100%;
 }
 
 .chat-page .chat-me .am-list-extra {
@@ -67,9 +80,9 @@ pre {
     margin-top: 0
 }
 
-.stick-footer {
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    z-index: 1;
+.msg-content {
+    overflow: auto;
+    flex: 1
 }
+
+.stick-footer {}
