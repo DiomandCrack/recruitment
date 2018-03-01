@@ -59,6 +59,14 @@ pre {
     text-align: right;
 }
 
+.chat-page .am-grid-icon {
+    display: none;
+}
+
+.chat-page .am-grid-text {
+    margin-top: 0
+}
+
 .stick-footer {
     position: fixed;
     width: 100%;

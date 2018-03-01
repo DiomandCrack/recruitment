@@ -252,3 +252,21 @@ if(this.props.chat.chatMsg.length){
     this.props.receMsg();
 }
 ```
+
+## antd-mobile grid跑马灯一开始没有高度
+
+antd的bug
+
+解决方法:
+
+```js
+componentDidMount(){
+    setTimeout(()=>{
+        window.dispatchEvent(new Event('resize'))
+    },0);
+}
+```
+
+## emoji包裹在`<span>`下的警告
+
+emoji单独存在于标签的时候 应该带有 `role='img'`和`aria-label=''`
