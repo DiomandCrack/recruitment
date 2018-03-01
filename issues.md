@@ -230,3 +230,9 @@ server.listen(3001, () => {
     console.log('app start at port 3001');
 });
 ```
+
+## 返回上一页
+
+```js
+this.props.history.goBack()
+```

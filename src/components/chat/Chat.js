@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import _ from 'lodash'
-import {List,InputItem,NavBar} from 'antd-mobile'
+import {List,InputItem,NavBar,Icon} from 'antd-mobile'
 import Realtime from '../../utils/realtime'
 
 import {connect} from 'react-redux'
@@ -12,6 +12,7 @@ const realtime = new Realtime();
     state=>state,
     {getMsgList,sendMsg,receMsg}
 )
+
 export default class Chat extends Component {
     state = {
         text:'',
@@ -19,8 +20,10 @@ export default class Chat extends Component {
     }
 
     componentDidMount(){
-        this.props.getMsgList();
-        this.props.receMsg();
+        if(!this.props.chat.chatMsg.length){
+            this.props.getMsgList();
+            this.props.receMsg();
+        }
     }
     
     handleSubmit=()=>{
@@ -35,21 +38,36 @@ export default class Chat extends Component {
         console.log(this.props)
         const targetId = _.get(this,'props.match.params.user');
         const Item = List.Item
+        const users = this.props.chat.users
+
+        if(!users[targetId]){
+            return null
+        }
 
         return (
         <div className='chat-page'>
-            <NavBar mode="dark" className='fix-header'>
-                {this.props.match.params.user}
+            <NavBar 
+                mode="dark" 
+                className='fix-header'
+                icon={<Icon type='left'/>}
+                onLeftClick={()=>{
+                    this.props.history.goBack();
+                }}>
+                {users[targetId].name}
             </NavBar>
             {this.props.chat.chatMsg.map((item)=>{
-                console.log(item.from,targetId)
+                const avatar = require(`../files/images/${users[item.from].avatar}.png`)
                 return item.from === targetId?(
                     <List key={item._id}>
-                        <Item>对方:{item.content}</Item>
+                        <Item
+                            thumb={avatar}
+                        >{item.content}</Item>
                     </List>
                     ):(
                     <List key={item._id} className='chat-me'>
-                        <Item>我:{item.content}</Item>
+                        <Item
+                            extra={<img src={avatar} alt={item._id}/>}
+                        >{item.content}</Item>
                     </List>
                     )}
                 )}

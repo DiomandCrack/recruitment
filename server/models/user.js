@@ -36,20 +36,19 @@ class User {
         endpoint：user/getmsglist
         */
         Router.get('/msglist',(req,res,next)=>{
-            const user = req.cookies.user;
+            const userId = req.cookies.userId;
             this.find().then(
-                
                 result=>{
                     let users = {};
                     result.forEach(item=>{
                         users[item._id] = {name:item.user,avatar:item.avatar}
-                    })
+                    });
+                    this.getMsgList(userId).then(doc=>{
+                        console.log(doc)
+                        return res.json({code:0,msgs:doc,users:users})
+                    }).catch(err=>console.log(err));
                 }
             )
-            this.getMsgList(user).then(result=>{
-                console.log(result)
-                return res.json(sucAuth(result))
-            }).catch(err=>console.log(err));
         })
         /*
         info update
@@ -245,7 +244,7 @@ class User {
     getMsgList(user){
         const Message = this.Message;
         return new Promise((resolve,reject)=>{
-            Message.find({},(err,result)=>{
+            Message.find({'$or':[{from:user},{to:user}]},(err,result)=>{
                 return err?reject(err):resolve(result)
             })
         });

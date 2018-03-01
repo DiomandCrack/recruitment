@@ -13,13 +13,14 @@ const MSG_READ = 'MSG_READ'
 
 const initState = {
     chatMsg:[],
+    users:{},
     unread:0
 }
 
 export function chat(state=initState,action){
     switch(action.type){
         case MSG_LIST:
-            return {...state,chatMsg:action.payload,unread:action.payload.filter(item=>!item.read).length}
+            return {...state,chatMsg:action.payload.msgs,unread:action.payload.msgs.filter(item=>!item.read).length,users:action.payload.users}
         case MSG_RECE:
             return {...state,chatMsg:[...state.chatMsg,action.payload],unread:state.unread+1}
         case MSG_READ:
@@ -28,8 +29,8 @@ export function chat(state=initState,action){
     }
 }
 
-const msgList=(msgs=[])=>{
-    return {type:MSG_LIST,payload:msgs}
+const msgList=(msgs=[],users)=>{
+    return {type:MSG_LIST,payload:{msgs,users}}
 }
 
 const msgRecv=(msg)=>{
@@ -54,7 +55,7 @@ export function getMsgList(){
     return dispatch => {
         service.get('user/msglist').then(res=>{
             if(res.status===200&&res.data.code===0){
-                dispatch(msgList(res.data.data))
+                dispatch(msgList(res.data.msgs,res.data.users))
             }
         })
     }
