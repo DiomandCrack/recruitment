@@ -8,7 +8,7 @@ import NavLinkBar from '../navLink/NavLinkBar'
 import Boss from '../boss/Boss'
 import Seeker from '../seeker/Seeker'
 import User from '../user/User'
-import Message from '../msg/MsgList'
+import Message from '../msg/Message'
 
 import {getMsgList,receMsg} from '../../redux/reducers/chat'
 
