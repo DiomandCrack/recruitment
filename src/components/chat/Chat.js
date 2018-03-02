@@ -27,6 +27,11 @@ export default class Chat extends Component {
             this.props.getMsgList()
             this.props.receMsg()
         }
+    }
+    
+    componentWillUnmount(){
+        //console.log('chat unmount')
+        //组件将要被销毁时设置消息为已读 可以修正未读消息数
         const to = this.props.match.params.user
         console.log(to);
         this.props.readMsg(to)

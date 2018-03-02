@@ -24,7 +24,8 @@ export function chat(state=initState,action){
         case MSG_RECE:
             return {...state,chatMsg:[...state.chatMsg,action.payload.msg],unread:action.payload.msg.to===action.payload.userId?state.unread+1:state.unread}
         case MSG_READ:
-            return {...state,chatMsg:state.chatMsg.map(item=>({...item,read:true})),unread:state.unread-action.payload.num}
+            const {from,num} = action.payload
+            return {...state,chatMsg:state.chatMsg.map(item=>({...item,read:from===item.from?true:item.read})),unread:state.unread-action.payload.num}
         default:
             return state
     }
