@@ -44,11 +44,27 @@ class User {
                         users[item._id] = {name:item.user,avatar:item.avatar}
                     });
                     this.getMsgList(userId).then(doc=>{
-                        console.log(doc)
+                        // console.log(doc)
                         return res.json({code:0,msgs:doc,users:users})
                     }).catch(err=>console.log(err));
                 }
             )
+        })
+        /*
+        read message
+        method:POST
+        endpoint:/user/readmsg
+        */
+        Router.post('/readmsg',(req,res,next)=>{
+            const {userId} = req.cookies
+            const {from} = req.body
+            console.log(from)
+            this.updateMsg(from,userId)
+                .then((result)=>{
+                    console.log(result)
+                    return res.json({code:0,num:result.nModified})
+                })
+                .catch((err)=>res.json(errMsg('修改失败')))
         })
         /*
         info update
@@ -157,7 +173,7 @@ class User {
                     if (!isMatch) {
                         return reject(errMsg('邮箱或密码错误'))
                     }
-                    console.log(result)
+                    // console.log(result)
                     return resolve(result)
                 }
             ).catch(
@@ -234,7 +250,7 @@ class User {
                     user:result.user,
                     type:result.type
                 },data)
-                console.log(copyData)
+                // console.log(copyData)
                 return err?reject(err):resolve(copyData);
             })
         });
@@ -248,6 +264,23 @@ class User {
                 return err?reject(err):resolve(result)
             })
         });
+    }
+
+    updateMsg(from,userId){
+        const {Message} = this;
+        return new Promise((resolve,reject)=>{
+            // Message.find({from,to:userId},(err,result)=>{
+            //     console.log(result)
+            // })
+            //'$set'只能设置第一个
+            Message.update(
+                {from,to:userId},
+                {'$set':{read:true}},
+                {'multi':true},
+                (err,result)=>{
+                return err?reject(err):resolve(result)
+            })
+        })
     }
     //clone
     copyUser(result){

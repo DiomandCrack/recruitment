@@ -29,7 +29,7 @@ export default class Chat extends Component {
         }
         const to = this.props.match.params.user
         console.log(to);
-        this.props.readMsg()
+        this.props.readMsg(to)
     }
 
     componentDidUpdate(){
@@ -41,7 +41,7 @@ export default class Chat extends Component {
         const to = this.props.match.params.user;
         const msg = this.state.text;
         this.props.sendMsg({from,to,msg})
-        this.setState({text:''})
+        this.setState({text:'',showEmoji:false})
     }
 
     showEmoji=()=>{

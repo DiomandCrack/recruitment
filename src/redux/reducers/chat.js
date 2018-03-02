@@ -24,6 +24,7 @@ export function chat(state=initState,action){
         case MSG_RECE:
             return {...state,chatMsg:[...state.chatMsg,action.payload.msg],unread:action.payload.msg.to===action.payload.userId?state.unread+1:state.unread}
         case MSG_READ:
+            return {...state,chatMsg:state.chatMsg.map(item=>({...item,read:true})),unread:state.unread-action.payload.num}
         default:
             return state
     }
@@ -36,14 +37,19 @@ const msgList=(msgs=[],users,userId)=>{
 const msgRecv=(msg,userId)=>{
     return {type:MSG_RECE,payload:{msg,userId}}
 }
-
+const msgRead=({from,to,num})=>{
+    return {type:MSG_READ,payload:{from,to,num}}
+}
 export function readMsg(from){
     return (dispatch,getState)=>{
-        // service.post('user/readmsg',{from})
-        // .then(res=>{
-        //     const userId = getState().user._id
-        // })
-        // .catch()
+        service.post('user/readmsg',{from})
+        .then(res=>{
+            const userId = getState().user._id
+            if(res.status===200&&res.data.code===0){
+                dispatch(msgRead({from,userId,num:res.data.num}))
+            }
+        })
+        .catch(err=>console.log(err))
     }
 }
 

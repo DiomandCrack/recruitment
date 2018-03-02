@@ -84,3 +84,7 @@ pre {
     overflow: auto;
     flex: 1
 }
+
+.am-badge {
+    padding-bottom: 4px;
+}
