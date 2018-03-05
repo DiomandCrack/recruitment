@@ -4,6 +4,8 @@ import {NavBar} from 'antd-mobile'
 import {Switch,Route} from 'react-router'
 import _ from 'lodash'
 
+import QueueAnim from 'rc-queue-anim'
+
 import NavLinkBar from '../navLink/NavLinkBar'
 import Boss from '../boss/Boss'
 import Seeker from '../seeker/Seeker'
@@ -72,19 +74,25 @@ export default class Dashboard extends Component {
                 component:User,
             },
         ];
-        const showTitle = navList.find((item)=>{
+        const page = navList.find((item)=>{
             return _.get(item,'path')===_.get(this,'props.location.pathname')
         })
+
+        //要让动画生效只能设置一个路由
         return (
         <div>
             <NavBar className='fixed-header' mode='dark'>{
-                _.get(showTitle,'title','首页')
+                _.get(page,'title','首页')
             }
             </NavBar>
             <div style={{marginTo:50}}>
-                <Switch>
-                    {routers(navList)}
-                </Switch>
+                <QueueAnim duration={800} type='top' delay={200}>
+                    <Route 
+                        key={_.get(page,'path')} 
+                        path={_.get(page,'path')} 
+                        component={_.get(page,'component')}
+                    ></Route>
+                </QueueAnim>
             </div>
             <NavLinkBar data={navList}/>
         </div>

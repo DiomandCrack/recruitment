@@ -26,3 +26,21 @@ export default connect(
     mapStateToProps,
 )(App);
 ```
+
+## reselect库
+
+缓存处理
+
+```js
+import {createSelector} from 'reselect'
+
+const numSelector = createSelector(
+    state=>state,
+    //第二个函数的参数,第一个的返回值
+    state=>{num:state*2}
+)
+
+@connect(
+    state=>numSelector(state),
+)
+```

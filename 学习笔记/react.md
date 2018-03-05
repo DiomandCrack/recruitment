@@ -104,5 +104,45 @@ console.log(obj1===obj3)
 比较两个对象是否相等
 
 ```js
+is(obj1,obj2)
 ```
 
+### SSR
+
+server site rending
+
+服务器 提供静态资源和借口
+
+前端模板,渲染
+
+SPA,体验好，页面跳转不刷新,首屏慢,不利于SEO
+
+#### React同构SSR
+
+RenderToNodeStream
+
+hydrate(注水只添加事件)
+
+#### 异步加载
+
+1. 回调函数
+
+回调地狱
+
+2. promise - axios
+
+回调扁平化
+
+3. generator
+
+function*
+
+4. async/await
+
+generator的语法糖
+
+### 动画
+
+1. ReactCSSTransitionGroup
+
+2. montion antd
