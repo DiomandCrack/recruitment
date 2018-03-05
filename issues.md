@@ -270,3 +270,59 @@ componentDidMount(){
 ## emoji包裹在`<span>`下的警告
 
 emoji单独存在于标签的时候 应该带有 `role='img'`和`aria-label=''`
+
+## win下 'NODE_ENV' 不是内部或外部命令，也不是可运行的程序
+
+安装`cross-env`
+
+package.json中设置
+
+```js
+"dev": "cross-env NODE_ENV=test nodemon --exec babel-node server/server"
+```
+
+## 报错:normalize.css SyntaxError Unexpected Token
+
+node环境不识别css和图片 需要用hook进行处理
+
+### css钩子
+
+安装`css-modules-require-hook`
+
+```js
+yarn add css-modules-require-hook
+```
+
+配置`css-modules-require-hook`
+
+```js
+//server.js
+const hook = require('css-modules-require-hook');
+//cmrh.conf.js
+module.exports = {
+  generateScopedName: '[name]__[local]___[hash:base64:5]',
+};
+```
+
+### 图片等静态资源钩子
+
+安装`asset-require-hook`
+
+```js
+yarn add asset-require-hook
+```
+
+```js
+const assethook = require('asset-require-hook')
+
+assethook({
+    extensions: ['jpg', 'png', 'gif', 'webp'],
+    limit:8000
+})
+```
+
+还是报错是因为图片是`import`导入的,需要改成`require`
+
+## 改用 babel-node之后 后端require前端依赖 不能正常工作
+
+需要改成import

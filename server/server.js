@@ -1,16 +1,35 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const http = require('http');
-const io = require('socket.io');
+import reducers from '../src/redux/reducer'
+import express from 'express'
+import cors from 'cors'
+import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
+import http from 'http'
+import path from 'path'
+import io from 'socket.io'
 
-const Model = require('./models');
-const Database = require('./database');
+import Model from './models'
+import Database from './database'
+
+
+import csshook from 'css-modules-require-hook/preset'
+import assethook from 'asset-require-hook'
+import {Provider} from 'react-redux'
+import {StaticRouter} from 'react-router-dom'
+import React from 'react'
+import {renderToString,renderToStaticMarkup} from 'react-dom/server'
+import { createStore, applyMiddleware, compose } from 'redux'
+import  thunk from 'redux-thunk'
+
+import App from '../src/App'
 
 const app = express();
 const server = http.Server(app);
 const wss = io(server);
+
+assethook({
+    extensions: ['jpg', 'png', 'gif', 'webp'],
+    limit:8000
+})
 
 app.use(cors({
     exposedHeaders: "*",
@@ -25,6 +44,31 @@ app.use(bodyParser.json({
     limit: '50mb'
 }));
 
+app.use((req,res,next)=>{
+    if(req.url.startsWith('/user/')||req.url.startsWith('/static/')){
+        return next()
+    }
+    const store = createStore(reducers, compose(
+        applyMiddleware(thunk),
+    ))
+    // const htmlRes = renderToString(<App/>)
+    // res.send(htmlRes);
+    let context = {}
+    const markup = renderToString(
+    <Provider store={store}>
+        <StaticRouter
+            location={req.url}
+            context={context}
+        >
+           <App></App>
+        </StaticRouter>
+    </Provider>
+    )
+    res.send(markup)
+    // return res.sendFile(path.resolve('build/index.html'))
+})
+
+app.use('/',express.static(path.resolve('build')))
 app.db = new Database();
 app.db.connect();
 
