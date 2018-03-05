@@ -44,3 +44,13 @@ const numSelector = createSelector(
     state=>numSelector(state),
 )
 ```
+
+## 新的特性
+
+### 新的核心算法Fiber
+
+### render 可以返回数组，字符串
+
+### 错误处理机制
+
+### Portals组件

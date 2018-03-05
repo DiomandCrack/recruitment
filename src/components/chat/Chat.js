@@ -48,6 +48,7 @@ export default class Chat extends Component {
         const msg = this.state.text;
         this.props.sendMsg({from,to,msg})
         this.setState({text:'',showEmoji:false})
+        this.scrollMsgCon()
     }
 
     showEmoji=()=>{
@@ -95,7 +96,7 @@ export default class Chat extends Component {
                 this.messagesRef = ref
                 console.log(this.messagesRef)
                 }}>
-                <QueueAnim delay={100} type='top'>
+                <QueueAnim delay={100} type='top' leaveReverse={false} >
                     {chatMsgs.map((item)=>{
                         const avatar = require(`../files/images/${users[item.from].avatar}.png`)
                         return item.from === targetId?(

@@ -16,11 +16,12 @@ import assethook from 'asset-require-hook'
 import {Provider} from 'react-redux'
 import {StaticRouter} from 'react-router-dom'
 import React from 'react'
-import {renderToString,renderToStaticMarkup} from 'react-dom/server'
+import {renderToString,renderToNodeStream} from 'react-dom/server'
 import { createStore, applyMiddleware, compose } from 'redux'
 import  thunk from 'redux-thunk'
 
 import App from '../src/App'
+import staticPath from '../build/asset-manifest.json'
 
 const app = express();
 const server = http.Server(app);
@@ -54,17 +55,66 @@ app.use((req,res,next)=>{
     // const htmlRes = renderToString(<App/>)
     // res.send(htmlRes);
     let context = {}
-    const markup = renderToString(
-    <Provider store={store}>
-        <StaticRouter
-            location={req.url}
-            context={context}
-        >
-           <App></App>
-        </StaticRouter>
-    </Provider>
-    )
-    res.send(markup)
+ 
+    res.write(`    
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="theme-color" content="#000000">
+        <link rel="stylesheet" href="${staticPath['main.css']}">
+        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+        <title>React App</title>
+    </head>
+    <body>
+        <div id="root">`)
+    const markupStream = renderToNodeStream(
+        <Provider store={store}>
+            <StaticRouter
+                location={req.url}
+                context={context}
+            >
+                <App></App>
+            </StaticRouter>
+        </Provider>
+        )
+
+    markupStream.pipe(res,{end:false})
+    markupStream.on('end',()=>{
+        res.write(`<script src="${staticPath['main.js']}"></script>
+        </body>
+        </html>`)
+        res.end()
+    })
+    // const markup = renderToString(
+    // <Provider store={store}>
+    //     <StaticRouter
+    //         location={req.url}
+    //         context={context}
+    //     >
+    //        <App></App>
+    //     </StaticRouter>
+    // </Provider>
+    // )
+    // const pageHtml=`
+    // <!DOCTYPE html>
+    // <html lang="en">
+    // <head>
+    //     <meta charset="utf-8">
+    //     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    //     <meta name="theme-color" content="#000000">
+    //     <link rel="stylesheet" href="${staticPath['main.css']}">
+    //     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    //     <title>React App</title>
+    // </head>
+    // <body>
+    //     <div id="root">${markup}</div>
+    //     <script src="${staticPath['main.js']}"></script>
+    // </body>
+    // </html>
+    // `
+    // res.send(pageHtml)
     // return res.sendFile(path.resolve('build/index.html'))
 })
 

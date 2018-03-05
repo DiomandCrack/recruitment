@@ -86,7 +86,7 @@ export default class Dashboard extends Component {
             }
             </NavBar>
             <div style={{marginTo:50}}>
-                <QueueAnim duration={800} type='top' delay={200}>
+                <QueueAnim duration={300} type='top' delay={200}>
                     <Route 
                         key={_.get(page,'path')} 
                         path={_.get(page,'path')} 

@@ -9,10 +9,24 @@ import Login from './container/login/Login'
 import Register from './container/register/Register'
 import BossInfo from './container/bossInfo/BossInfo'
 import SeekerInfo from './container/seekerInfo/SeekerInfo'
+import {AxiosInterceptors} from './utils/config'
+
+new AxiosInterceptors();
 
 export default class App extends Component{
+    state={
+        hasError:false
+    }
+    componentDidCatch(err,info){
+        console.log(err,info)
+        this.setState({
+            hasError:true
+        })
+    }
     render(){
-        return(
+        return this.state.hasError?(<h2>页面出错了</h2>)
+        :
+        (
             <div style={{height:'100%'}}>
             <AuthRoute/>
             <Switch>

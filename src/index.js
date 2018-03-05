@@ -6,14 +6,11 @@ import {BrowserRouter} from 'react-router-dom'
 
 //redux
 import {store} from './redux/store'
-import {AxiosInterceptors} from './utils/config'
 //component
 import App from './App'
 import './index.css'
 
-new AxiosInterceptors();
-
-ReactDom.render(
+ReactDom.hydrate(
     (<Provider store={store}>
         <BrowserRouter>
            <App/>
