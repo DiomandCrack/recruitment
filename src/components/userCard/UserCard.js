@@ -14,10 +14,11 @@ export default class UserCard extends Component {
 		this.props.history.push(`/chat/${_.get(item,'_id')}`)
 	}
     render() {
+		console.log(this.props)
 		return (
 			<WingBlank>
 				<WhiteSpace/>
-				{ _.map(_.get(this,'props.userList'),(item)=>(
+				{ this.props.userList.length!==0?_.map(_.get(this,'props.userList'),(item)=>(
 					_.get(item,'avatar')?
 					<Card 
 						key={_.get(item,'_id')} 
@@ -34,8 +35,8 @@ export default class UserCard extends Component {
 							
 							{_.get(item,'type')==='boss'?
 							[
-								<div className='title' key={_.get(item,'company')}>{_.get(item,'company')}</div>,
-								<div className='primary' key={_.get(item,'payroll')}>{_.get(item,'payroll')}</div>]:null}
+								<div className='title' key='company'>{_.get(item,'company')}</div>,
+								<div className='primary' key='payroll'>{_.get(item,'payroll')}</div>]:null}
 							<pre style={{font:'inherit',lineHeight:'1.5'}} >
 							{_.get(item,'desc')}
 							</pre>
@@ -44,7 +45,7 @@ export default class UserCard extends Component {
 					</Card>
 					:
 					null
-				))}
+				)):null}
 			</WingBlank>
 		)
     }

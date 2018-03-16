@@ -77,3 +77,10 @@ User.remove({age:18},(err,result)=>{
 })
 ```
 
+### save
+
+```js
+//create 无法读取id
+//用save
+```
+

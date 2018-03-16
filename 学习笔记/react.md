@@ -36,6 +36,8 @@ getChildContext(){
 
 获取子组件 `this.props.children`
 
+## prop-types
+
 ## 高阶组件
 
 ## shouldComponentUpdate

@@ -326,3 +326,61 @@ assethook({
 ## 改用 babel-node之后 后端require前端依赖 不能正常工作
 
 需要改成import
+
+## mongodb error：Network is unreachable
+
+首先启动mongodb
+
+```shell
+mongod --dbpath D:\MongoDB\data
+```
+
+开机自启
+
+```shell
+mongod.exe --logpath D:\mongodb\data\log\mongodb.log --logappend --dbpath D:\mongodb\data --directoryperdb --serviceName MongoDB --install
+```
+
+管理员模式下启动powershell
+
+开启服务:
+
+```shell
+net start mongodb 
+```
+
+## Type Script
+
+### 类型注解
+
+```js
+function greeter(person:string){
+
+}
+```
+
+### 借口
+
+```js
+function greeter(person:Person){
+
+}
+
+interface Person {
+    firstName:string,
+    lastName:string,
+}
+```
+
+## 类
+
+在构造函数的参数上使用`public`等同于创建了同名的成员变量
+
+```ts
+class Student {
+    fullName:string;
+    constructor(public firstName, public middleInitial, public lastName){
+        this.fullName = firstName+""+middleInital+""+lastName;
+    }
+}
+```

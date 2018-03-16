@@ -50,7 +50,18 @@ exact完全匹配
 </Switch>
 ```
 
-## WithRouter
+## withRouter
+
+用`withRouter`包裹普通组件就能变成路由组件
+
+```js
+@withRouter
+class AuthRouter extends Component{
+    render(){
+        return null
+    }
+}
+```
 
 ## 路由组件属性:history,location,match
 

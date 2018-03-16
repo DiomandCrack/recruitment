@@ -32,5 +32,78 @@ app.get('/data',(req,res)=>{
 })
 ```
 
+## Router挂载API
 
-### nodemon 自动重启
+约定俗成 成功 code:0
+
+不成功 code:1
+
+```js
+//user.js
+const Router = express.Router()
+
+Router.get('/info',(req,res)=>{
+    //校验cookie信息
+    res.json({code:1})
+})
+
+module.exports = Router
+```
+
+```js
+//server.js
+const  userRouter = require('./user')
+//开启中间件将userRouter挂载到'/user'路由上
+app.use('/user',userRouter)
+
+```
+
+## body-parser
+
+```js
+
+const bodyParser = require('bodyParser')
+
+//解析POST的json数据
+app.use(bodyParser.json())
+```
+
+## cookie-parser
+
+```js
+const cookieParser = require('cookie-parser')
+//解析cookie
+app.user(cookieParser)
+```
+
+
+
+## req,res
+
+req.body 前端传过来的所有数据
+
+res.data 是后端传过来的数据
+
+res.status 是状态码
+
+登陆成功之后 设置cookie给前端
+响应头:set-cookie
+
+```js
+res.cookie('userid',result._id)
+```
+
+后端读取cookie
+
+在信息页面中,校验req.cookies
+
+```js
+const {userid} = req.cookies
+```
+
+## cors
+
+后端跨域
+
+
+## nodemon 自动重启

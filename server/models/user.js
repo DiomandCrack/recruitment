@@ -58,7 +58,6 @@ class User {
         Router.post('/readmsg',(req,res,next)=>{
             const {userId} = req.cookies
             const {from} = req.body
-            console.log(from)
             this.updateMsg(from,userId)
                 .then((result)=>{
                     console.log(result)
@@ -82,7 +81,6 @@ class User {
                 if(!result){
                     return res.json(errMsg());
                 }
-                console.log(result)
                 return res.json(sucAuth(result));
             }).catch(err=>console.log(err))
         })
@@ -132,7 +130,6 @@ class User {
         endpoint:/user/register
         */
         Router.post('/register',(req,res,next)=>{
-            console.log('register user',req.body)
             const registerUser = req.body;
 
             this.findByEmailOrId(registerUser).then((result)=>{
