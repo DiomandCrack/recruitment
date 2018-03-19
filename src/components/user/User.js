@@ -20,6 +20,7 @@ export default class User extends Component {
                 browserCookies.erase('userId')
                 // window.location.href = window.location.href
                 this.props.logout()
+                window.location.reload()
             }}
         ])
     }

@@ -14,13 +14,12 @@ class AuthRoute extends Component {
     componentDidMount(){
         const publicList = ['/login','/register']
         const pathname = _.get(this,'props.location.pathname')
-        if(_.indexOf(publicList,pathname)!==-1){
-            return null
+        if(publicList.indexOf(pathname)!==-1){
+            return
         }
         const props = _.get(this,'props')
         props.loadUser(()=>{
-            const history = _.get(props,'history')
-            history.push('login')
+            this.props.push('/login')
         })
     }
 

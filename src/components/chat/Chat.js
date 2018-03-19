@@ -26,7 +26,6 @@ export default class Chat extends Component {
     componentDidMount(){
         if(!this.props.chat.chatMsg.length){
             this.props.getMsgList()
-            this.props.receMsg()
         }
     }
     
@@ -43,6 +42,7 @@ export default class Chat extends Component {
     }
     
     handleSubmit=()=>{
+        console.log(this.props.user)
         const from = this.props.user._id;
         const to = this.props.match.params.user;
         const msg = this.state.text;
@@ -60,14 +60,11 @@ export default class Chat extends Component {
     }
 
     scrollMsgCon=()=>{
-        console.log(this)
-        console.log(_.get(this,'messagesRef'))
         if(this.messagesRef){
         this.messagesRef.scrollTop = this.messagesRef.scrollHeight
         }
     }
     render() {
-        console.log(this.props)
         const emoji = '😀 😁 😂 🤣 😃 😄 😅 😆 😉 😊 😋 😎 😍 😘 😗 😙 😚 ☺️ 🙂 🤗 🤩 🤔 🤨 😐 😑 😶 🙄 😏 😣 😥 😮 🤐 😯 😪 😫 😴 😌 😛 😜 😝 🤤 😒 😓 😔 😕 🙃 🤑 😲 ☹️ 🙁 😖 😞 😟 😤 😢 😭 😦 😧 😨 😩 🤯 😬 😰 😱 😳 🤪 😵 😡 😠 🤬 😷 🤒 🤕 🤢 🤮 🤧 😇 🤠 🤡 🤥 🤫 🤭 🧐 🤓 😈 👿 👹 👺 💀 👻 👽 🤖 💩 😺 😸 😹 😻 😼 😽 🙀 😿 😾'
         const emojiData = emoji.split(' ').filter(item=>item).map(item=>({text:item}))
         //split将字符串按空格切割成数组 filter过滤防止有2个空格 map转成antd中grid要用到的数据
@@ -79,7 +76,7 @@ export default class Chat extends Component {
         if(!users[targetId]){
             return null
         }
-
+        
         return (
         <div className='chat-page'>
             <NavBar 
@@ -92,21 +89,19 @@ export default class Chat extends Component {
                 {users[targetId].name}
             </NavBar>
             <div className='msg-content' ref={(ref)=>{
-                console.log(ref)
-                this.messagesRef = ref
-                console.log(this.messagesRef)
+                return this.messagesRef = ref
                 }}>
                 <QueueAnim delay={100} type='top' leaveReverse={false} >
-                    {chatMsgs.map((item)=>{
-                        const avatar = require(`../files/images/${users[item.from].avatar}.png`)
+                    {chatMsgs.map((item,i)=>{
+                        const avatar = require(`../files/images/${users[item.from]?users[item.from].avatar:'avatar1'}.png`)
                         return item.from === targetId?(
-                            <List key={item._id}>
+                            <List key={i}>
                                 <Item
                                     thumb={avatar}
                                 >{item.content}</Item>
                             </List>
                             ):(
-                            <List key={item._id} className='chat-me'>
+                            <List key={i} className='chat-me'>
                                 <Item
                                     extra={<img src={avatar} alt={item._id}/>}
                                 >{item.content}</Item>
@@ -147,7 +142,6 @@ export default class Chat extends Component {
                         this.setState({
                             text:this.state.text+el.text
                         })
-                        console.log(el)
                     }}
                 />):null}
                

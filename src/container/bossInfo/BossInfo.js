@@ -5,11 +5,11 @@ import PropTypes from 'prop-types'
 
 import AvatarSelector from '../../components/avatarSelector/AvatarSelector'
 import {Redirect} from 'react-router-dom'
-import {update} from '../../redux/reducers/user'
+import {update,loadUser} from '../../redux/reducers/user'
 
 @connect(
     state=>state.user,
-    {update},
+    {update,loadUser},
 )
 export default class BossInfo extends Component {
 
@@ -28,6 +28,10 @@ export default class BossInfo extends Component {
         this.setState({
             avatar:imgName,
         })
+    }
+    handleSave = ()=>{
+        this.props.update(this.state)
+        this.props.loadUser()
     }
     render(){
         const {pathname} = this.props.location
@@ -63,9 +67,7 @@ export default class BossInfo extends Component {
                     <Button 
                         type='primary'
                         onClick={
-                            ()=>{
-                                this.props.update(this.state)
-                            }
+                            this.handleSave
                         }
                     >保存</Button>
                 </WingBlank>

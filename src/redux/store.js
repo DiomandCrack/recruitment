@@ -6,5 +6,5 @@ import reducers from './reducer'
 export const store = createStore(reducers, compose(
     applyMiddleware(thunk),
     //redux dev tools
-    // window.devToolsExtension ? window.devToolsExtension() : compose
+    window.devToolsExtension ? window.devToolsExtension() : compose
 ))

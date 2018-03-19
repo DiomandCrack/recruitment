@@ -12,6 +12,7 @@ export default class UserCard extends Component {
 		}
 	handleClick = (item) => {
 		this.props.history.push(`/chat/${_.get(item,'_id')}`)
+		// window.location.reload()
 	}
     render() {
 		console.log(this.props)

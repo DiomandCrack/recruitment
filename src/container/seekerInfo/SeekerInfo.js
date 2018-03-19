@@ -4,11 +4,11 @@ import {connect} from 'react-redux'
 
 import AvatarSelector from '../../components/avatarSelector/AvatarSelector'
 import {Redirect} from 'react-router-dom'
-import {update} from '../../redux/reducers/user'
+import {update,loadUser} from '../../redux/reducers/user'
 
 @connect(
     state=>state.user,
-    {update},
+    {update,loadUser},
 )
 export default class SeekerInfo extends Component {
 
@@ -20,6 +20,10 @@ export default class SeekerInfo extends Component {
         this.setState({
             [key]:value
         })
+    }
+    handleSave = ()=>{
+        this.props.update(this.state)
+        this.props.loadUser();
     }
     selectAvatar=(imgName)=>{
         this.setState({
@@ -53,10 +57,7 @@ export default class SeekerInfo extends Component {
                     </TextareaItem>
                     <Button 
                         type='primary'
-                        onClick={
-                            ()=>{
-                                this.props.update(this.state)
-                            }
+                        onClick={this.handleSave
                         }
                     >保存</Button>
                 </WingBlank>

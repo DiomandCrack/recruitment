@@ -40,11 +40,12 @@ class User {
             this.find().then(
                 result=>{
                     let users = {};
+                    console.log('result',result)
                     result.forEach(item=>{
                         users[item._id] = {name:item.user,avatar:item.avatar}
                     });
                     this.getMsgList(userId).then(doc=>{
-                        // console.log(doc)
+                        console.log('users',users)
                         return res.json({code:0,msgs:doc,users:users})
                     }).catch(err=>console.log(err));
                 }
@@ -187,14 +188,14 @@ class User {
             const hashPwd = bcrypt.hashSync(pwd,saltRound);
             const userFormatted = {...user,pwd:hashPwd};
 
-            const userModel = new User(userFormatted);
-            userModel.save((err,result)=>{
-                return err?reject(err):resolve(result)
-            })
-
-            // User.create(userFormatted,(err,result)=>{
+            // const userModel = new User(userFormatted);
+            // userModel.save((err,result)=>{
             //     return err?reject(err):resolve(result)
             // })
+
+            User.create(userFormatted,(err,result)=>{
+                return err?reject(err):resolve(result)
+            })
         })
     }
     find(user={}){

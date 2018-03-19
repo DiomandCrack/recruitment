@@ -11,6 +11,7 @@ const initState = {
     email:'',
     pwd:'',
     type:'',
+    _id:''
 }
 
 const AUTH_SUCCESS = 'AUTH_SUCCESS'

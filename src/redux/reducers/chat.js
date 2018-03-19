@@ -45,6 +45,7 @@ export function readMsg(from){
     return (dispatch,getState)=>{
         service.post('user/readmsg',{from})
         .then(res=>{
+            console.log(getState())
             const userId = getState().user._id
             if(res.status===200&&res.data.code===0){
                 dispatch(msgRead({from,userId,num:res.data.num}))
@@ -75,6 +76,7 @@ export function getMsgList(){
         service.get('user/msglist').then(res=>{
             if(res.status===200&&res.data.code===0){
                 console.log(getState())
+                console.log(res.data)
                 const userId = getState().user._id;
                 dispatch(msgList(res.data.msgs,res.data.users,userId))
             }
