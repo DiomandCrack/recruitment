@@ -15,7 +15,7 @@ export default class Seeker extends Component {
 
     render() {
         return (
-            <UserCard userList={this.props.userList}/>
+            <UserCard userList={this.props.userList} className='seeker'/>
         )
     }
 }

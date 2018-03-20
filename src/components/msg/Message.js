@@ -16,20 +16,16 @@ export default class Message extends Component {
         }
     }
     render() {
-        console.log(this.props);
         const msgGroup = {}
         this.props.chat.chatMsg.forEach((item)=>{
             msgGroup[item.chat_id] = msgGroup[item.chat_id] || []
             msgGroup[item.chat_id].push(item) 
         })
-        console.log(msgGroup)
         const chatList = Object.values(msgGroup).sort((a,b)=>{
             const aLast = this.getLast(a)
             const bLast = this.getLast(b)
             return bLast.create_time-aLast.create_time
         })
-        console.log('chatList',chatList)
-        console.log(Object.getOwnPropertyNames(this.props.chat.users).length)
         // if(this.props.chat.users&&Object.getOwnPropertyNames(this.props.chat.users).length!==0){
         //     this.forceUpdate()
         // }
@@ -37,7 +33,7 @@ export default class Message extends Component {
         const {Brief} = Item
         const userId = this.props.user._id
         return (
-            <div>
+            <div className='page-content'>
                 <List>
                     {this.props.chat.users&&Object.getOwnPropertyNames(this.props.chat.users).length!==0?chatList.map((item)=>{
                         const lastMsg = this.getLast(item)
@@ -50,7 +46,6 @@ export default class Message extends Component {
                             avatar = this.props.chat.users[targetId].avatar
                         }
                         const unreadNum = item.filter(item=>!item.read&&item.to===userId).length
-                        console.log(lastMsg)
                         return(
                             targetId?
                             <Item

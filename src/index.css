@@ -20,7 +20,7 @@ body {
     height: 50px;
 }
 
-.fix-header.am-navbar {
+.am-navbar {
     position: fixed;
     top: 0;
     width: 100%;

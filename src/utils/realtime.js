@@ -4,7 +4,6 @@ export default class Realtime {
     constructor(){
         this.socket = null;
         this.connect();
-        console.log(this)
     }
 
     connect(){

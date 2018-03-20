@@ -17,8 +17,7 @@ export default class UserCard extends Component {
     render() {
 		console.log(this.props)
 		return (
-			<WingBlank>
-				<WhiteSpace/>
+			<WingBlank className='page-content'>
 				{ this.props.userList.length!==0?_.map(_.get(this,'props.userList'),(item)=>(
 					_.get(item,'avatar')?
 					<Card 

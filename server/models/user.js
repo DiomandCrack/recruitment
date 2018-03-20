@@ -33,19 +33,17 @@ class User {
         /* 
         msg list
         method:GET
-        endpoint：user/getmsglist
+        endpoint：user/msglist
         */
         Router.get('/msglist',(req,res,next)=>{
             const userId = req.cookies.userId;
             this.find().then(
                 result=>{
                     let users = {};
-                    console.log('result',result)
                     result.forEach(item=>{
                         users[item._id] = {name:item.user,avatar:item.avatar}
                     });
                     this.getMsgList(userId).then(doc=>{
-                        console.log('users',users)
                         return res.json({code:0,msgs:doc,users:users})
                     }).catch(err=>console.log(err));
                 }
@@ -61,7 +59,6 @@ class User {
             const {from} = req.body
             this.updateMsg(from,userId)
                 .then((result)=>{
-                    console.log(result)
                     return res.json({code:0,num:result.nModified})
                 })
                 .catch((err)=>res.json(errMsg('修改失败')))

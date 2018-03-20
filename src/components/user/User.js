@@ -31,7 +31,7 @@ export default class User extends Component {
         const {Brief} = Item
         
         return this.props.user?(
-        <div>
+        <div className='page-content'>
             {avatar?<Result
                 img={<img src={require(`../files/images/${avatar}.png`)} alt={`${avatar}`}/>}
                 title={_.get(this,'props.user')}
